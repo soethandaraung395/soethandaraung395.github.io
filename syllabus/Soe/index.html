@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome - Soe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            text-align: center;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px 0;
+        }
+        h1 {
+            margin: 0;
+        }
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin: 40px 20px;
+        }
+        .card {
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 300px;
+            text-align: center;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-10px);
+        }
+        .btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            text-decoration: none;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+        .btn-course {
+            background-color: #4CAF50; /* Green */
+        }
+        
+        .btn-course:hover {
+            background-color: #45a049;
+        }
+        
+        .btn-testing {
+            background-color: #2196F3; /* Blue */
+        }
+        
+        .btn-testing:hover {
+            background-color: #1976D2;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #ddd;
+            margin-top: 40px;
+        }
+        /* Password Modal Styles */
+        #passwordModal {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .modal-content input {
+            padding: 10px;
+            width: 80%;
+            font-size: 1em;
+            margin: 10px 0;
+        }
+        @media (min-width: 600px) {
+            .card {
+                width: 45%;
+            }
+        }
+
+        @media (min-width: 900px) {
+            .card {
+                width: 300px;
+            }
+        }
+
+        .language-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+        .language-toggle button {
+            background-color: white;
+            color: #4CAF50;
+            border: none;
+            padding: 8px 12px;
+            margin-left: 5px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .language-toggle button.active {
+            background-color: #FFD700;
+            color: #333;
+        }
+
+    </style>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyCGTsZncPetIHiC_MnoNiflaen-LSaVsuc",
+        authDomain: "nlp-seminar-c8c63.firebaseapp.com",
+        projectId: "nlp-seminar-c8c63",
+        storageBucket: "nlp-seminar-c8c63.appspot.com",
+        messagingSenderId: "348634037467",
+        appId: "1:348634037467:web:659d7eb753f1e045a7a0fe"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    </script>
+</head>
+<body>
+
+    <div id="passwordModal">
+        <div class="modal-content">
+            <h2>Soe, please enter your password:</h2>
+            <input type="password" id="passwordInput" placeholder="Enter password..." />
+            <br />
+            <button onclick="checkPassword()" class="btn">Submit</button>
+        </div>
+    </div>
+
+    <header>
+        <h1>Welcome, Soe!</h1>
+        <div class="language-toggle">
+            <button onclick="setLanguage('en')" id="btn-en" class="active">EN</button>
+            <button onclick="setLanguage('jp')" id="btn-jp">JP</button>
+        </div>
+    </header>
+
+    <section id="content" style="display:none;">
+        <h2 id="topics-title">NLP-Seminar Topics</h2>
+        <div class="card-container">
+            <div class="card">
+                <h3 id="part1-title">Part 1: Introduction to NLP</h3>
+                <a id="btn-part1" href="https://colab.research.google.com/github/upc-hub/upc-hub.github.io/blob/main/nlp_seminar/part1.ipynb" target="_blank" class="btn btn-course">📖 Course Notebook</a>
+                <a id="btn-test-part1" href="https://colab.research.google.com/github/upc-hub/upc-hub.github.io/blob/main/nlp_seminar/Soe/part1_test.ipynb" target="_blank" class="btn btn-testing">📝 Testing Notebook</a>
+            </div>
+            <div class="card">
+                <h3 id="part2-title">Part 2: Tokenization & Embeddings</h3>
+                <a id="btn-part2" href="https://colab.research.google.com/github/upc-hub/upc-hub.github.io/blob/main/nlp_seminar/part2.ipynb" target="_blank" class="btn btn-course">📖 Course Notebook</a>
+                <a id="btn-test-part2" href="https://colab.research.google.com/github/upc-hub/upc-hub.github.io/blob/main/nlp_seminar/Soe/part2_test.ipynb" target="_blank" class="btn btn-testing">📝 Testing Notebook</a>
+            </div>
+            <div class="card">
+                <h3 id="part3-title">Part 3: Fine-Tuning LLMs</h3>
+                <a id="btn-part3" href="https://colab.research.google.com/github/upc-hub/upc-hub.github.io/blob/main/nlp_seminar/part3.ipynb" target="_blank" class="btn btn-course">📖 Course Notebook</a>
+                <a id="btn-test-part3" href="https://colab.research.google.com/github/upc-hub/upc-hub.github.io/blob/main/nlp_seminar/Soe/part3_test.ipynb" target="_blank" class="btn btn-testing">📝 Testing Notebook</a>
+            </div>
+            <div class="card">
+                <h3 id="part4-title">Part 4: Retrieval-Augmented Generation (RAG)</h3>
+                <a id="btn-part4" href="https://colab.research.google.com/github/upc-hub/upc-hub.github.io/blob/main/nlp_seminar/part4.ipynb" target="_blank" class="btn btn-course">📖 Course Notebook</a>
+                <a id="btn-test-part4" href="https://colab.research.google.com/github/upc-hub/upc-hub.github.io/blob/main/nlp_seminar/Soe/part4_test.ipynb" target="_blank" class="btn btn-testing">📝 Testing Notebook</a>
+            </div>
+            <div class="card">
+                <h3 id="part5-title">Part 5: Knowledge Graph + LLM</h3>
+                <a id="btn-part5" href="https://colab.research.google.com/github/upc-hub/upc-hub.github.io/blob/main/nlp_seminar/part5.ipynb" target="_blank" class="btn btn-course">📖 Course Notebook</a>
+                <a id="btn-test-part5" href="https://colab.research.google.com/github/upc-hub/upc-hub.github.io/blob/main/nlp_seminar/Soe/part5_test.ipynb" target="_blank" class="btn btn-testing">📝 Testing Notebook</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Asahi Laboratory, Nagoya University</p>
+    </footer>
+
+    <script>
+        function setLanguage(lang) {
+            document.getElementById('btn-en').classList.remove('active');
+            document.getElementById('btn-jp').classList.remove('active');
+            document.getElementById('btn-' + lang).classList.add('active');
+
+            if (lang === 'jp') {
+            document.getElementById('topics-title').innerText = 'セミナートピック';
+            document.getElementById('part1-title').innerText = 'パート1：NLP入門';
+            document.getElementById('part2-title').innerText = 'パート2：トークナイゼーションと埋め込み表現';
+            document.getElementById('part3-title').innerText = 'パート3：LLMのファインチューニング';
+            document.getElementById('part4-title').innerText = 'パート4：検索拡張生成（RAG）';
+            document.getElementById('part5-title').innerText = 'パート5：ナレッジグラフ + LLM';
+            for (let i = 1; i <= 5; i++) {
+                document.getElementById(`btn-part${i}`).innerText = '📖 コースノートブック';
+                document.getElementById(`btn-test-part${i}`).innerText = '📝 テストノートブック';
+            }
+            } else {
+            document.getElementById('topics-title').innerText = 'NLP-Seminar Topics';
+            document.getElementById('part1-title').innerText = 'Part 1: Introduction to NLP';
+            document.getElementById('part2-title').innerText = 'Part 2: Tokenization & Embeddings';
+            document.getElementById('part3-title').innerText = 'Part 3: Fine-Tuning LLMs';
+            document.getElementById('part4-title').innerText = 'Part 4: Retrieval-Augmented Generation (RAG)';
+            document.getElementById('part5-title').innerText = 'Part 5: Knowledge Graph + LLM';
+            for (let i = 1; i <= 5; i++) {
+                document.getElementById(`btn-part${i}`).innerText = '📖 Course Notebook';
+                document.getElementById(`btn-test-part${i}`).innerText = '📝 Testing Notebook';
+            }
+            }
+        }
+
+        const studentName = "Soe";
+        const password = "Soe123"; // Hardcoded password for Soe
+
+        function checkPassword() {
+            const input = document.getElementById("passwordInput").value;
+            if (input === password) {
+                document.getElementById("passwordModal").style.display = "none";
+                document.getElementById("content").style.display = "block";
+                localStorage.setItem(`authenticated_${studentName}`, "true");
+                localStorage.setItem(`student_${studentName}`, "active");
+                // ✅ Update Firestore status *after successful login*
+                db.collection("student_status").doc(studentName).set({
+                    status: "active",
+                    lastVisited: new Date().toISOString()
+                }, { merge: true });
+
+            } else {
+                alert("Incorrect password. Please try again.");
+            }
+        }
+
+        // Check if already authenticated
+        window.onload = function() {
+            const authenticated = localStorage.getItem(`authenticated_${studentName}`);
+            if (authenticated === "true") {
+                document.getElementById("passwordModal").style.display = "none";
+                document.getElementById("content").style.display = "block";
+                localStorage.setItem(`student_${studentName}`, "active");
+            }
+        };
+
+        //db.collection("student_status").doc(studentName).set({
+        //    status: "active",
+        //    lastVisited: new Date().toISOString()
+        //}, { merge: true });
+
+        // Mark as inactive when the page is closed or refreshed
+        window.addEventListener("beforeunload", function () {
+            const url = `https://firestore.googleapis.com/v1/projects/nlp-seminar-c8c63/databases/(default)/documents/student_status/${studentName}?updateMask.fieldPaths=status&updateMask.fieldPaths=lastVisited`;
+
+            const data = JSON.stringify({
+                fields: {
+                    status: { stringValue: "inactive" },
+                    lastVisited: { stringValue: new Date().toISOString() }
+                }
+            });
+
+            navigator.sendBeacon(url, data);
+        });
+
+    </script>
+
+</body>
+</html>

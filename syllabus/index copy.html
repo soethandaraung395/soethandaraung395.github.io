@@ -1,0 +1,426 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Asahi Laboratory - NLP Seminar</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+
+    header {
+      background-color: #4CAF50;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2em;
+    }
+
+    .header-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      text-align: center;
+    }
+
+    .instructor-info {
+      margin-top: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .instructor-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .instructor-photo {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid white;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    section {
+      margin-bottom: 40px;
+    }
+
+    h2 {
+      border-bottom: 2px solid #4CAF50;
+      padding-bottom: 10px;
+    }
+
+    .card-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 10px;
+      width: 300px;
+      text-align: center;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+
+    .card1 {
+      background: #fff;
+      border-radius: 10px;
+      width: 500px;
+      text-align: justify;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card1:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 16px;
+      text-decoration: none;
+      background-color: #4CAF50;
+      color: white;
+      border-radius: 6px;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: #45a049;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #ddd;
+      margin-top: 40px;
+    }
+
+    @media (max-width: 768px) {
+      .header-container {
+        flex-direction: column;
+      }
+    }
+    .social-icons a {
+      text-decoration: none;
+      font-size: 1.5em;
+      margin: 0 8px;
+      color: white;
+      transition: transform 0.2s ease;
+    }
+
+    .social-icons a:hover {
+      transform: scale(1.2);
+      color: #FFD700; /* Gold on hover for nice effect */
+    }
+
+    .language-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+    }
+    .language-toggle button {
+      background-color: white;
+      color: #4CAF50;
+      border: none;
+      padding: 8px 12px;
+      margin-left: 5px;
+      cursor: pointer;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+    .language-toggle button.active {
+      background-color: #FFD700;
+      color: #333;
+    }
+
+  </style>
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+  <header>
+    <h1 id="seminar-title">Asahi Laboratory - NLP Seminar</h1>
+    <div class="language-toggle">
+      <button onclick="setLanguage('en')" id="btn-en" class="active">EN</button>
+      <button onclick="setLanguage('jp')" id="btn-jp">JP</button>
+    </div>
+    <div class="instructor-info">
+      <img src="https://a-lab.material.nagoya-u.ac.jp/wp-content/uploads/2024/06/Heinsensei.png" 
+          alt="Instructor Photo" 
+          class="instructor-photo">
+      <strong>Hein Htet, Ph.D.</strong>
+      <span>hein.htet.j1@f.mail.nagoya-u.ac.jp</span>
+      <div class="social-icons">
+        <a href="https://jp.linkedin.com/in/hein-htet-375472230" target="_blank" title="LinkedIn">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+        <a href="https://github.com/upc-hub" target="_blank" title="GitHub">
+          <i class="fab fa-github"></i>
+        </a>
+        <a id="researchmap-link" href="https://profs.provost.nagoya-u.ac.jp/html/100013690_en.html" target="_blank" title="ResearchMap">
+          <i class="fas fa-book"></i>
+        </a>
+      </div>
+    </div>
+  </header>
+  <main>
+    <section>
+      <h2 id="about-title">About the Seminar</h2>
+      <p id="about-content">This hands-on seminar, organized by the Asahi Laboratory at Nagoya University, introduces students to the fundamentals and applications of Natural Language Processing (NLP) using Large Language Models (LLMs).</p>
+    </section>
+
+    <section>
+      <h2 id="topics-title">Topics Covered</h2>
+      <div class="card-container">
+        <div class="card">
+          <h3 id="part1-title">Part 1: Introduction to NLP</h3>
+          <a href="https://colab.research.google.com/github/upc-hub/upc-hub.github.io/blob/main/nlp_seminar/part1.ipynb" target="_blank" class="btn" id="btn-part1">Course Notebook</a>
+        </div>
+        <div class="card">
+          <h3 id="part2-title">Part 2: Tokenization & Embeddings</h3>
+          <a href="https://colab.research.google.com/github/upc-hub/upc-hub.github.io/blob/main/nlp_seminar/part2.ipynb" target="_blank" class="btn" id="btn-part2">Course Notebook</a>
+        </div>
+        <div class="card">
+          <h3 id="part3-title">Part 3: Fine-Tuning LLMs</h3>
+          <a href="https://colab.research.google.com/github/upc-hub/upc-hub.github.io/blob/main/nlp_seminar/part3.ipynb" target="_blank" class="btn" id="btn-part3">Course Notebook</a>
+        </div>
+        <div class="card">
+          <h3 id="part4-title">Part 4: Retrieval-Augmented Generation (RAG)</h3>
+          <a href="https://colab.research.google.com/github/upc-hub/upc-hub.github.io/blob/main/nlp_seminar/part4.ipynb" target="_blank" class="btn" id="btn-part4">Course Notebook</a>
+        </div>
+        <div class="card">
+          <h3 id="part5-title">Part 5: Knowledge Graph + LLM</h3>
+          <a href="https://colab.research.google.com/github/upc-hub/upc-hub.github.io/blob/main/nlp_seminar/part5.ipynb" target="_blank" class="btn" id="btn-part5">Course Notebook</a>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2 id="environment-choice">Choosing Your Environment: Google Colab or JupyterHub</h2>
+      <div class="card-container">
+        <div class="card1">
+          <h3 id="env1">Google Colab</h3>
+          <p id="colab">Google Colab provides a preconfigured environment running on a virtual machine. The connection may be automatically disconnected after a period of inactivity, requiring you to reconnect. If additional libraries or dependencies are needed, they must be reinstalled each time the connection is reestablished. If the required libraries are small, the installation time is usually acceptable. However, installing large dependencies repeatedly can be time-consuming and frustrating.</p>
+          <p id="require"><strong>Requirements:</strong></p>
+          <ul>
+            <li id="need">A Google account is required.</li>
+          </ul>
+        </div>
+        <div class="card1">
+        <h3 id="env2">JupyterHub</h3>
+        <p id="jupyter">JupyterHub provides a preconfigured environment hosted on our local server. Access to the university VPN is required, so it is not available to participants who are not affiliated with Nagoya University.</p>
+        <p id="require"><strong>Requirements:</strong></p>
+        <ul>
+          <li id="need1">Access to the Nagoya University VPN</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2 id="attendance-title">Registered Participants</h2>
+      <table>
+        <thead>
+          <tr>
+            <th id="header-name">Name</th>
+            <th id="header-status">Status</th>
+            <th id="header-last-visited">Last Visited</th>
+            <th id="header-access-link">Access Link</th>
+          </tr>
+        </thead>
+        <tbody id="studentTable">
+          <!-- Students will be dynamically loaded here -->
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Asahi Laboratory, Nagoya University</p>
+  </footer>
+
+  <script>
+      let currentLanguage = 'en'; // Track current language
+
+      function setLanguage(lang) {
+          currentLanguage = lang; // Update the language globally
+          document.getElementById('btn-en').classList.remove('active');
+          document.getElementById('btn-jp').classList.remove('active');
+          document.getElementById('btn-' + lang).classList.add('active');
+
+          const researchMapLink = document.getElementById('researchmap-link');
+
+          if (lang === 'jp') {
+              document.getElementById('seminar-title').innerText = '旭研究室 - NLPセミナー';
+              document.getElementById('about-title').innerText = 'セミナーについて';
+              document.getElementById('about-content').innerText = 'この実践的なセミナーでは、名古屋大学の旭研究室が主催し、大規模言語モデル（LLM）を用いた自然言語処理（NLP）の基礎と応用を紹介します。';
+              document.getElementById('topics-title').innerText = 'カバーされるトピック';
+              document.getElementById('part1-title').innerText = 'パート1：NLP入門';
+              document.getElementById('part2-title').innerText = 'パート2：トークナイゼーションと埋め込み表現';
+              document.getElementById('part3-title').innerText = 'パート3：LLMのファインチューニング';
+              document.getElementById('part4-title').innerText = 'パート4：検索拡張生成（RAG）';
+              document.getElementById('part5-title').innerText = 'パート5：ナレッジグラフ + LLM';
+              document.getElementById('environment-choice').innerText = '環境の選択: Google Colab または JupyterHub';
+              document.getElementById('colab').innerText = 'Google Colab は、仮想マシン上で実行される事前構成済みの環境を提供します。一定時間操作がないと接続が自動的に切断され、再接続が必要になる場合があります。追加のライブラリや依存関係が必要な場合は、接続が再確立されるたびに再インストールする必要があります。必要なライブラリが小さい場合は、インストール時間は通常許容範囲内です。しかし、大きな依存関係を繰り返しインストールすると、時間がかかり、作業が煩わしくなる可能性があります。'
+              document.getElementById('jupyter').innerText = 'JupyterHubは、当校のローカルサーバー上にホストされた事前設定済みの環境を提供します。ご利用には大学VPNへのアクセスが必要となるため、名古屋大学に所属していない参加者はご利用いただけません。'
+              document.getElementById('require').innerText = '要件：'
+              document.getElementById('need').innerText = 'Google アカウントが必要です。'
+              document.getElementById('need1').innerText = '名古屋大学VPNへのアクセス'
+
+              for (let i = 1; i <= 5; i++) {
+                  document.getElementById(`btn-part${i}`).innerText = 'コースノートブック';
+              }
+              document.getElementById('attendance-title').innerText = '登録済み参加者';
+              document.getElementById('header-name').innerText = '名前';
+              document.getElementById('header-status').innerText = '状態';
+              document.getElementById('header-last-visited').innerText = '最終訪問';
+              document.getElementById('header-access-link').innerText = 'リンク';
+              researchMapLink.href = "https://profs.provost.nagoya-u.ac.jp/html/100013690_ja.html";
+          } else {
+              document.getElementById('seminar-title').innerText = 'Asahi Laboratory - NLP Seminar';
+              document.getElementById('about-title').innerText = 'About the Seminar';
+              document.getElementById('about-content').innerText = 'This hands-on seminar, organized by the Asahi Laboratory at Nagoya University, introduces students to the fundamentals and applications of Natural Language Processing (NLP) using Large Language Models (LLMs).';
+              document.getElementById('topics-title').innerText = 'Topics Covered';
+              document.getElementById('part1-title').innerText = 'Part 1: Introduction to NLP';
+              document.getElementById('part2-title').innerText = 'Part 2: Tokenization & Embeddings';
+              document.getElementById('part3-title').innerText = 'Part 3: Fine-Tuning LLMs';
+              document.getElementById('part4-title').innerText = 'Part 4: Retrieval-Augmented Generation (RAG)';
+              document.getElementById('part5-title').innerText = 'Part 5: Knowledge Graph + LLM';
+              document.getElementById('environment-choice').innerText = 'for choosing Your Environment: Google Colab or JupyterHub';
+              document.getElementById('colab').innerText = 'Google Colab provides a preconfigured environment running on a virtual machine. The connection may be automatically disconnected after a period of inactivity, requiring you to reconnect. If additional libraries or dependencies are needed, they must be reinstalled each time the connection is reestablished. If the required libraries are small, the installation time is usually acceptable. However, installing large dependencies repeatedly can be time-consuming and frustrating.'
+              document.getElementById('jupyter').innerText = 'JupyterHub provides a preconfigured environment hosted on our local server. Access to the university VPN is required, so it is not available to participants who are not affiliated with Nagoya University.'
+              document.getElementById('require').innerText = 'Requirements:'
+              document.getElementById('need').innerText = 'A Google account is required.'
+              document.getElementById('need1').innerText = 'Access to the Nagoya University VPN'
+
+              for (let i = 1; i <= 5; i++) {
+                  document.getElementById(`btn-part${i}`).innerText = 'Course Notebook';
+              }
+              document.getElementById('attendance-title').innerText = 'Attendance';
+              document.getElementById('header-name').innerText = 'Name';
+              document.getElementById('header-status').innerText = 'Status';
+              document.getElementById('header-last-visited').innerText = 'Last Visited';
+              document.getElementById('header-access-link').innerText = 'Access Link';
+              researchMapLink.href = "https://profs.provost.nagoya-u.ac.jp/html/100013690_en.html";
+          }
+
+          loadTableRealtime(); // Refresh table labels
+      }
+
+      const students = [
+          { username: "Sato", en: "Koki Sato", jp: "佐藤　昂輝" },
+          { username: "Horita", en: "Takuya Horita", jp: "堀田　拓弥" },
+          { username: "Genozono", en: "Kosei Genozono", jp: "現王園　洸誠" },
+          { username: "Yoshimochi", en: "Koki Yoshimochi", jp: "吉持　幸毅" },
+          { username: "Shibusawa", en: "Subaru Shibusawa", jp: "澁澤　昴" },
+          { username: "Hirano", en: "Manae Hirano", jp: "平野　学惠" },
+          { username: "Lynn", en: "Lynn Htet Aung", jp: "リン テッ アウン" },
+          { username: "Soe", en: "Soe Thandar Aung", jp: "ソー タンダー アウン" },
+          { username: "Kimura", en: "Haruka Kimura", jp: "木村　晴香" },
+          { username: "Asahi", en: "Ryoji Asahi", jp: "旭　良司" },
+          { username: "Alex", en: "KUTANA Alexander", jp: "アレックス" },
+          { username: "Amgad", en: "Amgad Ahmed Ali Ibrahim", jp: "アムガッド" },
+          { username: "Hein", en: "Hein Htet", jp: "ヘイン テット" }
+      ];
+
+      const firebaseConfig = {
+          apiKey: "AIzaSyCGTsZncPetIHiC_MnoNiflaen-LSaVsuc",
+          authDomain: "nlp-seminar-c8c63.firebaseapp.com",
+          projectId: "nlp-seminar-c8c63",
+          storageBucket: "nlp-seminar-c8c63.firebasestorage.app",
+          messagingSenderId: "348634037467",
+          appId: "1:348634037467:web:659d7eb753f1e045a7a0fe"
+      };
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+
+      function loadTableRealtime() {
+        const table = document.getElementById("studentTable");
+        table.innerHTML = "";
+
+        db.collection("student_status").onSnapshot(snapshot => {
+            const statusData = [];
+
+            students.forEach(({ username, en, jp }) => {
+                const doc = snapshot.docs.find(d => d.id === username);
+                const data = doc ? doc.data() : null;
+                const status = data && data.status ? data.status : "inactive";
+                const lastVisited = data && data.lastVisited ? new Date(data.lastVisited).toLocaleString() : "-";
+                statusData.push({ username, en, jp, status, lastVisited });
+            });
+
+            statusData.sort((a, b) => (a.status === "active" ? -1 : 1));
+
+            const visitLabel = currentLanguage === 'jp' ? 'ページを見る' : 'Visit Page';
+
+            table.innerHTML = statusData.map(({ username, en, jp, status, lastVisited }) => {
+                const displayName = currentLanguage === 'jp' ? jp : en;
+                const statusIcon = status === "active" ? "🟢" : "🔴";
+
+                return `<tr>
+                    <td>${displayName}</td>
+                    <td style="font-size: 1em;">${statusIcon}</td>
+                    <td>${lastVisited}</td>
+                    <td><a href="./${username}/" class="btn">${visitLabel}</a></td>
+                </tr>`;
+            }).join("");
+        });
+    }
+
+      loadTableRealtime();
+  </script>
+</body>
+</html>
