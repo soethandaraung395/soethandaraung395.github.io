@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Soe Thandar Aung - Programming Syllabus</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+
+    <!-- header {
+      background-color: #4CAF50;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    } -->
+
+    header {
+      background-image: url('https://static.licdn.com/aero-v1/sc/h/5q92mjc5c51bjlwaj3rs9aa82');
+      background-size: cover; /* Ensure the image covers the entire header */
+      background-position: center; /* Center the image */
+      color: white; /* Ensure text is readable on the background */
+      padding: 20px;
+      text-align: center;
+  }
+
+    header h1 {
+      margin: 0;
+      font-size: 2em;
+    }
+
+    .header-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      text-align: center;
+    }
+
+    .instructor-info {
+      margin-top: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .instructor-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .instructor-photo {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid white;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    section {
+      margin-bottom: 40px;
+    }
+
+    h2 {
+      border-bottom: 2px solid #5A9BD5;
+      padding-bottom: 10px;
+    }
+
+    .card-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 10px;
+      width: 300px;
+      text-align: center;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+
+    .card1 {
+      background: #fff;
+      border-radius: 10px;
+      width: 500px;
+      text-align: justify;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card1:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 16px;
+      text-decoration: none;
+      background-color: #5A9BD5;
+      color: white;
+      border-radius: 6px;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: #3E7BBE;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
+    }
+
+  tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #ddd;
+      margin-top: 40px;
+    }
+
+    @media (max-width: 768px) {
+      .header-container {
+        flex-direction: column;
+      }
+    }
+    .social-icons a {
+      text-decoration: none;
+      font-size: 1.5em;
+      margin: 0 8px;
+      color: white;
+      transition: transform 0.2s ease;
+    }
+
+    .social-icons a:hover {
+      transform: scale(1.2);
+      color: #FFD700; /* Gold on hover for nice effect */
+    }
+
+    .language-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+    }
+    .language-toggle button {
+      background-color: white;
+      color: #5A9BD5;
+      border: none;
+      padding: 8px 12px;
+      margin-left: 5px;
+      cursor: pointer;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+    .language-toggle button.active {
+      background-color: #FFD700;
+      color: #333;
+    }
+    #require {
+      color: #5A9BD5; /* Lighter blue color for the heading */
+      font-size: 1.5em; /* Slightly larger font size for emphasis */
+      margin-bottom: 10px; /* Add spacing below the heading */
+  }
+  
+  #need {
+      color: #333; /* Neutral dark color for list items */
+      font-size: 1.2em; /* Adjust font size for readability */
+      margin-bottom: 5px; /* Add spacing between list items */
+  }
+
+  #env1 span {
+    font-size: 0.9em; /* Slightly smaller font size */
+    color: #777; /* Neutral gray color */
+}
+
+  </style>
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+  <header>
+    <h1 id="seminar-title">Soe Thandar Aung - 基礎プログラミングI</h1>
+    <div class="language-toggle">
+      <button onclick="setLanguage('en')" id="btn-en" class="active">EN</button>
+      <button onclick="setLanguage('jp')" id="btn-jp">JP</button>
+    </div>
+    <div class="instructor-info">
+      <img src="https://i1.rgstatic.net/ii/profile.image/11431281216021398-1704541352822_Q128/Soe-Aung-10.jpg" 
+          alt="Instructor Photo" 
+          class="instructor-photo">
+      <strong>Soe Thandar Aung, Ph.D.</strong>
+      <span>soethandar@s.okayama-u.ac.jp</span>
+      <div class="social-icons">
+        <a href="www.linkedin.com/in/soe-thandar-aung-79d23104" target="_blank" title="LinkedIn">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+        <a href="https://github.com/soethandaraung395" target="_blank" title="GitHub">
+          <i class="fab fa-github"></i>
+        </a>
+        <a id="researchmap-link" href="https://researchmap.jp/soethandar" target="_blank" title="ResearchMap">
+          <i class="fas fa-book"></i>
+        </a>
+      </div>
+    </div>
+  </header>
+  <main>
+    <section>
+      <h2 id="about-title">本授業の到達目標（本授業で学生が身につけるもの・身につける力</h2>
+      <p id="about-content">1.Pythonの基本構文（変数、データ型、条件分岐、繰り返し、関数など）を理解し、実装できる力を身につける。</p>
+      <p id="about-content">2.プログラミングを通して問題解決能力を高める。</p>
+      <p id="about-content">3.自作のプログラムをS-CodeLAB上で提出できるようになる。
+      </p>
+      <p id="about-content">4.S-CodeLABを通じて、情報システム設計への理解を深め、将来的な研究や開発への関心を高める。</p>
+    </section>
+
+    <section>
+      <h2 id="about-title">本授業の概要</h2>
+      <p id="about-content">この授業では、Pythonプログラミングの基礎を学ぶ。講義で基本概念を学んだ後、各回のテーマに沿った実習課題をS-CodeLABシステム上で実施する予定である。S-CodeLABは現在開発中の学習支援システムであり、担当教員が研究段階で設計・開発した「Programming Learning Assistant System（PLAS）」の知見をもとに設計されている。PLASの教育的効果を活かしつつ、新たな機能を追加することで、より実践的で効果的な学習環境を目指している。S-CodeLABを通じて学生は学習内容の成果をすぐに確認できるだけでなく、将来的に自らこのようなシステムを設計・構築する視点を持ち、研究や技術開発への発展が期待される。初学者にも取り組みやすいよう、課題は段階的に構成されている。S-CodeLABへのアクセス方法や使用方法も授業内で紹介する予定である。</p>
+    </section>
+
+    <section></section>
+      <h2 id="about-title">実務経験のある教員による授業科目</h2>
+      <p id="about-content">担当教員は、大学教育向けのプログラミング学習支援システム（PLAS）を設計・開発した経験を有し、現在はそれを発展させたS-CodeLABシステムを構築中である。</p>
+    </section>
+
+    <section>
+      <h2 id="topics-title">授業計画</h2>
+      <div class="card-container">
+        <div class="card">
+          <h3 id="part1-title">第1回</h3>
+          <a href="https://github.com/user-attachments/files/20532557/Chapter1.pdf" target="_blank" class="btn" id="btn-part1">Pythonの概要と環境構築</a>        </div>
+        <div class="card">
+          <h3 id="part2-title">第2回</h3>
+          <a href="https://github.com/user-attachments/files/20532557/Chapter1.pdf" target="_blank" class="btn" id="btn-part2">基本の文法（文字列と数値）</a>
+        </div>
+        <div class="card">
+          <h3 id="part3-title">第3回</h3>
+          <a href="https://github.com/user-attachments/files/20532557/Chapter1.pdf" target="_blank" class="btn" id="btn-part3">演算と変数の使い方</a>
+        </div>
+        <div class="card">
+          <h3 id="part4-title">第4回</h3>
+          <a href="https://github.com/user-attachments/files/20532557/Chapter1.pdf" target="_blank" class="btn" id="btn-part4">条件分岐</a>
+        </div>
+        <div class="card">
+          <h3 id="part5-title">第5回</h3>
+          <a href="https://github.com/user-attachments/files/20532557/Chapter1.pdf" target="_blank" class="btn" id="btn-part5">繰り返し処理</a>
+        </div>
+        <div class="card">
+          <h3 id="part5-title">第6回</h3>
+          <a href="https://github.com/user-attachments/files/20532557/Chapter1.pdf" target="_blank" class="btn" id="btn-part5">リストとタプル</a>
+        </div>
+        <div class="card">
+          <h3 id="part5-title">第7回</h3>
+          <a href="https://github.com/user-attachments/files/20532557/Chapter1.pdf" target="_blank" class="btn" id="btn-part5">辞書と集合</a>
+        </div>
+        <div class="card">
+          <h3 id="part5-title">第8回</h3>
+          <a href="https://github.com/user-attachments/files/20532557/Chapter1.pdf" target="_blank" class="btn" id="btn-part5">関数の定義</a>
+        </div>
+        <div class="card">
+          <h3 id="part5-title">第9回</h3>
+          <a href="https://github.com/user-attachments/files/20532557/Chapter1.pdf" target="_blank" class="btn" id="btn-part5">モジュールとライブラリ</a>
+        </div>
+        <div class="card">
+          <h3 id="part5-title">第10回</h3>
+          <a href="https://github.com/user-attachments/files/20532557/Chapter1.pdf" target="_blank" class="btn" id="btn-part5">ファイルの読み書き</a>
+        </div>
+        <div class="card">
+          <h3 id="part5-title">第11回</h3>
+          <a href="https://github.com/user-attachments/files/20532557/Chapter1.pdf" target="_blank" class="btn" id="btn-part5">例外処理</a>
+        </div>
+        <div class="card">
+          <h3 id="part5-title">第12回</h3>
+          <a href="https://github.com/user-attachments/files/20532557/Chapter1.pdf" target="_blank" class="btn" id="btn-part5">オブジェクト指向入門</a>
+        </div>
+        <div class="card">
+          <h3 id="part5-title">第13回</h3>
+          <a href="https://github.com/user-attachments/files/20532557/Chapter1.pdf" target="_blank" class="btn" id="btn-part5">簡単なアプリケーション作成①</a>
+        </div>
+        <div class="card">
+          <h3 id="part5-title">第14回</h3>
+          <a href="https://github.com/user-attachments/files/20532557/Chapter1.pdf" target="_blank" class="btn" id="btn-part5">簡単なアプリケーション作成②</a>
+        </div>
+        <div class="card">
+          <h3 id="part5-title">第15回</h3>
+          <a href="https://github.com/user-attachments/files/20532557/Chapter1.pdf" target="_blank" class="btn" id="btn-part5">
+            まとめ
+            </a>
+        </div>
+      </div>
+    </section>
+
+    <section></section>
+      <h2 id="about-title">授業時間外の自己学習</h2>
+      <p id="about-content">各授業後に、担当教員が用意したPython演習課題に取り組み、S-CodeLABプラットフォーム上で提出すること。1回あたりの復習・課題作業に2〜3時間程度を想定し、合計で約60時間の自己学習時間を見込む。</p>
+    </section>
+
+    <section></section>
+      <h2 id="about-title">テキスト</h2>
+      <p id="about-content">•	「やさしいPython」,「Pythonで学ぶプログラミングの作り方」およびS-CodeLABを中心に演習を進める。</p>
+    </section>
+
+    <section></section>
+      <h2 id="about-title">本授業に関連する参考書・参考資料</h2>
+      <p id="about-content">•	参考書: 「やさしいPython」（高橋麻奈：SoftBank Creative）,「Pythonで学ぶプログラミングの作り方」
+             
+        </p>
+        <p id="about-content">•	補足資料: その他、必要な資料を配布   </p>
+    </section>
+
+    <section>
+      <h2 id="evaluation-criteria">学習成果の評価観点</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>到達目標</th>
+            <th>成績評価の観点</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>DP1</td>
+            <td>S-CodeLABシステムを活用し、サイバーセキュリティやプログラミングの知識を実際のシステム構築に応用することで、情報工学の実践力を養う。</td>
+          </tr>
+          <tr>
+            <td>DP2</td>
+            <td>講義後の課題を通して、学生は問題を分析し、解決策を設計・実行し、論理的思考力と問題解決能力を養う。</td>
+          </tr>
+          <tr>
+            <td>DP3</td>
+            <td>S-CodeLABのシステムを観察し、課題に取り組むことを通じて、将来の研究テーマに関するアイデアを構想するとともに、文書作成・プレゼンテーション・コミュニケーション能力を高め、主体的かつ協働的に学習する姿勢を養うことができる。</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2 id="environment-choice">学習成果の評価基準</h2>
+      <div class="card-container">
+        <div class="card1">
+          <h3 id="env1">出席・積極的参加：20% <span>※ (出席および参加態度)</span></h3> 
+          <h3 id="env1">課題提出：80% <span>※ (授業後に実施する課題の提出および内容)</h3>
+
+          <p id="require"><strong>連絡先</strong></p>
+          <ul>
+            <li id="need">研究室 - </li>
+            <li id="need">電話番号 - </li>
+            <li id="need">E-Mail - </li>
+          </ul>
+
+        </div>
+        <div class="card1">
+        <h3 id="env2">履修者へのメッセージ（履修要件など）</h3>
+        <p id="jupyter">• プログラミングの基礎から学習を開始しますので,事前の専門的な知識は必要ありません。</p>
+        <p id="jupyter">• 授業内の演習は,基本的に各自のPCを使用して進めますので,ノートPCを持参してください。</p>
+        <p id="jupyter">• 情報やプログラミングに興味があり,これから学び始めたい方に適した内容となっています。</p>
+        <p id="jupyter">• 使用言語：学生により日本語又は英語</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Okayama University</p>
+  </footer>
+
+  
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(to right, #f0f4f8, #d9e8f5);
+        }
+        .login-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+        }
+        .login-container h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .login-container input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .login-container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #5A9BD5;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .login-container button:hover {
+            background-color: #3E7BBE;
+        }
+        #error-message {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <form id="login-form">
+            <input type="text" id="username" placeholder="Username" aria-label="Username" autocomplete="username" required>
+            <input type="password" id="password" placeholder="Password" aria-label="Password" autocomplete="current-password" required>
+            <button type="submit">Login</button>
+        </form>
+        <p id="error-message"></p>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        // Your Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDMA7xgXohyQKTAQMUug5eKtb1iesLKKtI",
+            authDomain: "syllabus-project-e82df.firebaseapp.com",
+            projectId: "syllabus-project-e82df",
+            storageBucket: "syllabus-project-e82df.appspot.com",
+            messagingSenderId: "720975072474",
+            appId: "1:720975072474:web:38eb44c4c2e290ee5e69e3"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        const loginForm = document.getElementById('login-form');
+        const errorMessage = document.getElementById('error-message');
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            const loginButton = loginForm.querySelector('button');
+            loginButton.disabled = true; // Disable the button
+            loginButton.textContent = "Logging in..."; // Show loading state
+
+            errorMessage.textContent = ''; // Clear previous error messages
+            errorMessage.style.color = 'red'; // Default color for error messages
+
+            try {
+                // Fetch the email associated with the username from Firestore
+                const userDoc = await db.collection('users').doc(username).get();
+
+                if (!userDoc.exists) {
+                    throw new Error("Username not found");
+                }
+
+                const email = userDoc.data().email; // Get the email from the document
+
+                // Sign in with the fetched email and password
+                const userCredential = await auth.signInWithEmailAndPassword(email, password);
+                console.log("Login successful:", userCredential);
+
+                // Show success message
+                errorMessage.textContent = "Login successful! Redirecting...";
+                errorMessage.style.color = 'green'; // Change color for success messages
+                console.log("Success message displayed:", errorMessage.textContent);
+
+                // Redirect to the intended page
+                const urlParams = new URLSearchParams(window.location.search);
+                const redirectUrl = urlParams.get('redirect') || '/';
+                console.log("Redirecting to:", redirectUrl);
+                setTimeout(() => {
+                    window.location.href = redirectUrl;
+                }, 1000); // Wait 2 seconds before redirecting
+            } catch (error) {
+                console.error("Login failed:", error.message);
+                errorMessage.textContent = error.message; // Display error message
+                console.log("Error message displayed:", errorMessage.textContent);
+            } finally {
+                // Re-enable the button
+                loginButton.disabled = false;
+                loginButton.textContent = "Login";
+            }
+        });
+    </script>
+</body>
+</html>
