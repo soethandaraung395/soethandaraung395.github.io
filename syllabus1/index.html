@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="jp">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,6 +15,41 @@
       color: #333;
       min-width: 1024px;
       overflow-x: auto;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    body.dark {
+      background-color: #121212;
+      color: #eee;
+    }
+    body.dark header {
+      background-blend-mode: overlay;
+    }
+    body.dark .sidebar-menu {
+      background-color: #2c2c2c;
+    }
+    body.dark .sidebar-menu h2 {
+      color: #fff;
+    }
+/* Ensure text in cards stays black even in dark mode */
+body.dark .card h3,
+body.dark .card .card-subtitle {
+  color: #000;
+}
+
+    body.dark .card1 {
+      background-color: #fff;
+      color: #000;
+    }
+    body.dark .card1 h3,
+    body.dark .card1 p,
+    body.dark .card1 li {
+      color: #000;
+    }
+        
+    body.dark footer {
+      background-color: #222;
+      color: #fff;
     }
 
     header {
@@ -133,13 +168,12 @@
       background-color: #3E7BBE;
     }
 
-    /* AssistiveTouch-style Sidebar */
     .assistive-sidebar {
       position: fixed;
       bottom: 20px;
-      right: 20px; /* change from left */
+      right: 20px;
       z-index: 1000;
-    }    
+    }
 
     .assistive-button {
       background-color: #5A9BD5;
@@ -151,23 +185,35 @@
       height: 60px;
       cursor: pointer;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      margin: 5px;
     }
 
     .sidebar-menu {
-      display: none;
+      display: block;
       position: absolute;
       bottom: 70px;
-      right: 0;         /* align to the right of the button */
+      right: 0;
       left: auto;
-      width: 220px;
+      width: 200px;
       max-width: 90vw;
       background-color: #f4f4f4;
       border-radius: 10px;
       box-shadow: 0 0 12px rgba(0, 0, 0, 0.15);
       padding: 15px;
       text-align: center;
-      transition: opacity 0.3s ease;
-    }    
+      box-sizing: border-box;
+      overflow-wrap: break-word;
+      transform: translateY(10px);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .sidebar-menu.open {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
 
     .sidebar-menu h2 {
       font-size: 1.2em;
@@ -201,15 +247,14 @@
         width: 90%;
       }
       .assistive-sidebar {
-        left: 10px;
+        right: 10px;
         bottom: 10px;
       }
-      .sidebar-menu {
-        left: auto;
-        right: 0;
-        transform: translateX(0);
-      }
     }
+
+    table th {
+      white-space: nowrap;
+    }    
 
     footer {
       text-align: center;
@@ -217,18 +262,54 @@
       background-color: #ddd;
       margin-top: 40px;
     }
+    .card-subtitle {
+      font-size: 1.1em;
+      color: #555;
+      margin: 10px 0;
+    }
+    .btn-group {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .card1 {
+  background: #fff; /* White background for consistency */
+  border-radius: 10px;
+  width: 100%;
+  max-width: 500px; /* Adjust width if needed */
+  text-align: left;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Same shadow as other cards */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card1:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Hover effect */
+}
+
+#env1, #env2 {
+  margin-bottom: 10px;
+}
+
+.language-toggle button.active {
+  background-color: #FFD700;
+  color: #333;
+}
+ 
   </style>
 </head>
 <body>
   <header>
-    <h1 id="seminar-title">基礎プログラミングI</h1>
+    <h1 id="seminar-title" data-lang-jp="基礎プログラミングI" data-lang-en="Introduction to Programming I">基礎プログラミングI</h1>
     <div class="language-toggle">
-      <button onclick="setLanguage('en')" id="btn-en" class="active">EN</button>
-      <button onclick="setLanguage('jp')" id="btn-jp">JP</button>
+      <button onclick="setLanguage('en')" id="btn-en">EN</button>
+      <button onclick="setLanguage('jp')" id="btn-jp" class="active">JP</button>
     </div>
     <div class="instructor-info">
       <img src="https://i1.rgstatic.net/ii/profile.image/11431281216021398-1704541352822_Q128/Soe-Aung-10.jpg" class="instructor-photo">
-      <strong>Soe Thandar Aung, Ph.D.</strong>
+      <strong data-lang-jp="ソー タンダー アウン (博士)" data-lang-en="Soe Thandar Aung, Ph.D.">Soe Thandar Aung (Ph.D)</strong>
       <span>soethandar@s.okayama-u.ac.jp</span>
       <div class="social-icons">
         <a href="https://www.linkedin.com/in/soe-thandar-aung-79d23104" target="_blank"><i class="fab fa-linkedin-in"></i></a>
@@ -238,9 +319,9 @@
     </div>
   </header>
 
-  <!-- Assistive Sidebar -->
   <div class="assistive-sidebar" id="assistiveSidebar">
     <button id="assistiveToggle" class="assistive-button" title="Menu">☰</button>
+    <button id="darkModeToggle" class="assistive-button" title="Dark Mode">🌙</button>
     <div class="sidebar-menu" id="sidebarMenu">
       <h2>S-CodeLAB</h2>
       <a href="../index.html">ホーム</a>
@@ -251,159 +332,566 @@
   </div>
 
   <main>
-    <section>
+    <!-- <section>
       <h2 id="about-title">本授業の到達目標（本授業で学生が身につけるもの・身につける力</h2>
       <p id="about-content">1.Pythonの基本構文（変数、データ型、条件分岐、繰り返し、関数など）を理解し、実装できる力を身につける。</p>
       <p id="about-content">2.プログラミングを通して問題解決能力を高める。</p>
       <p id="about-content">3.自作のプログラムをS-CodeLAB上で提出できるようになる。
       </p>
       <p id="about-content">4.S-CodeLABを通じて、情報システム設計への理解を深め、将来的な研究や開発への関心を高める。</p>
-    </section>
+    </section> -->
 
     <section>
+      <h2 id="about-title" data-lang-jp="本授業の到達目標（本授業で学生が身につけるもの・身につける力）" data-lang-en="Course Goals (Skills Students Will Acquire)">
+        本授業の到達目標（本授業で学生が身につけるもの・身につける力）
+      </h2>
+      <p id="about-content" data-lang-jp="1.Pythonの基本構文（変数、データ型、条件分岐、繰り返し、関数など）を理解し、実装できる力を身につける。" data-lang-en="1. Understand and implement basic Python syntax (variables, data types, conditionals, loops, functions, etc.).">1.Pythonの基本構文（変数、データ型、条件分岐、繰り返し、関数など）を理解し、実装できる力を身につける。</p>
+    
+      <p id="about-content" data-lang-jp="2.プログラミングを通して問題解決能力を高める。" data-lang-en="2. Enhance problem-solving skills through programming.">2.プログラミングを通して問題解決能力を高める。</p>
+    
+      <p id="about-content" data-lang-jp="3.自作のプログラムをS-CodeLAB上で提出できるようになる。" data-lang-en="3. Learn to submit original programs via the S-CodeLAB system.">3.自作のプログラムをS-CodeLAB上で提出できるようになる。</p>
+    
+      <p id="about-content" data-lang-jp="4.S-CodeLABを通じて、情報システム設計への理解を深め、将来的な研究や開発への関心を高める。" data-lang-en="4. Deepen understanding of information system design and stimulate interest in future research and development through S-CodeLAB.">4.S-CodeLABを通じて、情報システム設計への理解を深め、将来的な研究や開発への関心を高める。</p>
+    </section>
+    
+    <!-- <section>
       <h2 id="about-title">本授業の概要</h2>
       <p id="about-content">この授業では、Pythonプログラミングの基礎を学ぶ。講義で基本概念を学んだ後、各回のテーマに沿った実習課題をS-CodeLABシステム上で実施する予定である。S-CodeLABは現在開発中の学習支援システムであり、担当教員が研究段階で設計・開発した「Programming Learning Assistant System（PLAS）」の知見をもとに設計されている。PLASの教育的効果を活かしつつ、新たな機能を追加することで、より実践的で効果的な学習環境を目指している。S-CodeLABを通じて学生は学習内容の成果をすぐに確認できるだけでなく、将来的に自らこのようなシステムを設計・構築する視点を持ち、研究や技術開発への発展が期待される。初学者にも取り組みやすいよう、課題は段階的に構成されている。S-CodeLABへのアクセス方法や使用方法も授業内で紹介する予定である。</p>
-    </section>
-
-    <section></section>
-      <h2 id="about-title">実務経験のある教員による授業科目</h2>
-      <p id="about-content">担当教員は、大学教育向けのプログラミング学習支援システム（PLAS）を設計・開発した経験を有し、現在はそれを発展させたS-CodeLABシステムを構築中である。</p>
-    </section>
+    </section> -->
 
     <section>
+      <h2 id="about-title"
+          data-lang-jp="本授業の概要"
+          data-lang-en="Course Overview">
+        本授業の概要
+      </h2>
+      <p id="about-content"
+         data-lang-jp="この授業では、Pythonプログラミングの基礎を学ぶ。講義で基本概念を学んだ後、各回のテーマに沿った実習課題をS-CodeLABシステム上で実施する予定である。S-CodeLABは現在開発中の学習支援システムであり、担当教員が研究段階で設計・開発した「Programming Learning Assistant System（PLAS）」の知見をもとに設計されている。PLASの教育的効果を活かしつつ、新たな機能を追加することで、より実践的で効果的な学習環境を目指している。S-CodeLABを通じて学生は学習内容の成果をすぐに確認できるだけでなく、将来的に自らこのようなシステムを設計・構築する視点を持ち、研究や技術開発への発展が期待される。初学者にも取り組みやすいよう、課題は段階的に構成されている。S-CodeLABへのアクセス方法や使用方法も授業内で紹介する予定である。"
+         data-lang-en="This course covers the fundamentals of Python programming. After learning basic concepts in lectures, students will complete hands-on exercises aligned with each week’s theme using the S-CodeLAB system. S-CodeLAB is an educational support system currently under development, designed based on insights from the earlier Programming Learning Assistant System (PLAS) created by the instructor. By building on PLAS’s proven educational value and adding new features, the system aims to create a more practical and effective learning environment. Through S-CodeLAB, students can instantly assess their learning outcomes and are encouraged to develop a mindset for designing and building similar systems in the future. Exercises are structured to support beginners step-by-step. Instructions on how to access and use S-CodeLAB will be provided in class.">
+        この授業では、Pythonプログラミングの基礎を学ぶ。講義で基本概念を学んだ後、各回のテーマに沿った実習課題をS-CodeLABシステム上で実施する予定である。S-CodeLABは現在開発中の学習支援システムであり、担当教員が研究段階で設計・開発した「Programming Learning Assistant System（PLAS）」の知見をもとに設計されている。PLASの教育的効果を活かしつつ、新たな機能を追加することで、より実践的で効果的な学習環境を目指している。S-CodeLABを通じて学生は学習内容の成果をすぐに確認できるだけでなく、将来的に自らこのようなシステムを設計・構築する視点を持ち、研究や技術開発への発展が期待される。初学者にも取り組みやすいよう、課題は段階的に構成されている。S-CodeLABへのアクセス方法や使用方法も授業内で紹介する予定である。
+      </p>
+    </section>    
+
+    <!-- <section>
+      <h2 id="about-title">実務経験のある教員による授業科目</h2>
+      <p id="about-content">担当教員は、大学教育向けのプログラミング学習支援システム（PLAS）を設計・開発した経験を有し、現在はそれを発展させたS-CodeLABシステムを構築中である。</p>
+    </section> -->
+
+    <section>
+      <h2 id="experience-title"
+          data-lang-jp="実務経験のある教員による授業科目"
+          data-lang-en="Instructor’s Practical Experience">
+        実務経験のある教員による授業科目
+      </h2>
+      <p id="experience-content"
+         data-lang-jp="担当教員は、大学教育向けのプログラミング学習支援システム（PLAS）を設計・開発した経験を有し、現在はそれを発展させたS-CodeLABシステムを構築中である。"
+         data-lang-en="The instructor has practical experience in designing and developing a programming learning support system (PLAS) for university education and is currently building an enhanced version called S-CodeLAB.">
+        担当教員は、大学教育向けのプログラミング学習支援システム（PLAS）を設計・開発した経験を有し、現在はそれを発展させたS-CodeLABシステムを構築中である。
+      </p>
+    </section>    
+
+    <!-- <section>
       <h2 id="topics-title">授業計画</h2>
       <div class="card-container">
         <div class="card">
           <h3 id="part1-title">第1回</h3>
-          <a href="https://github.com/user-attachments/files/20532557/Chapter1.pdf" target="_blank" class="btn" id="btn-part1">Pythonの概要と環境構築</a>        </div>
+          <p class="card-subtitle">概要と環境構築</p>
+          <div class="btn-group">
+            <a href="javascript:void(0);" class="btn" onclick="openPdfModal('15eL0L3s7JAc7XOrClpEAPCKPNXQgFdXz')">講義スライド</a>
+            <a href="https://www.cc.okayama-u.ac.jp/funabiki/PLAS/Python/Python_GUP_basic/index.html" target="_blank" class="btn">練習問題</a>
+          </div>
+        </div>
         <div class="card">
           <h3 id="part2-title">第2回</h3>
-          <a href="https://github.com/user-attachments/files/20532557/Chapter1.pdf" target="_blank" class="btn" id="btn-part2">基本の文法（文字列と数値）</a>
+          <p class="card-subtitle">基本の文法（文字列と数値）</p>
+          <div class="btn-group">
+            <a href="javascript:void(0);" onclick="showPreparationAlert()" class="btn">講義スライド</a>
+            <a href="https://www.cc.okayama-u.ac.jp/funabiki/PLAS/Python/Python_GUP_basic/index.html" target="_blank" class="btn">練習問題</a>
+          </div>
         </div>
         <div class="card">
           <h3 id="part3-title">第3回</h3>
-          <a href="https://github.com/user-attachments/files/20532557/Chapter1.pdf" target="_blank" class="btn" id="btn-part3">演算と変数の使い方</a>
+          <p class="card-subtitle">演算と変数の使い方</p>
+          <div class="btn-group">
+            <a href="https://github.com/user-attachments/files/20532557/Chapter3.pdf" target="_blank" class="btn">講義スライド</a>
+            <a href="https://www.cc.okayama-u.ac.jp/funabiki/PLAS/Python/Python_GUP_basic/index.html" target="_blank" class="btn">練習問題</a>
+          </div>
         </div>
         <div class="card">
           <h3 id="part4-title">第4回</h3>
-          <a href="https://github.com/user-attachments/files/20532557/Chapter1.pdf" target="_blank" class="btn" id="btn-part4">条件分岐</a>
+          <p class="card-subtitle">条件分岐</p>
+          <div class="btn-group">
+            <a href="https://github.com/user-attachments/files/20532557/Chapter4.pdf" target="_blank" class="btn">講義スライド</a>
+            <a href="https://www.cc.okayama-u.ac.jp/funabiki/PLAS/Python/Python_GUP_basic/index.html" target="_blank" class="btn">練習問題</a>
+          </div>
         </div>
         <div class="card">
           <h3 id="part5-title">第5回</h3>
-          <a href="https://github.com/user-attachments/files/20532557/Chapter1.pdf" target="_blank" class="btn" id="btn-part5">繰り返し処理</a>
+          <p class="card-subtitle">繰り返し処理</p>
+          <div class="btn-group">
+            <a href="https://github.com/user-attachments/files/20532557/Chapter5.pdf" target="_blank" class="btn">講義スライド</a>
+            <a href="https://www.cc.okayama-u.ac.jp/funabiki/PLAS/Python/Python_GUP_basic/index.html" target="_blank" class="btn">練習問題</a>
+          </div>
         </div>
         <div class="card">
-          <h3 id="part5-title">第6回</h3>
-          <a href="https://github.com/user-attachments/files/20532557/Chapter1.pdf" target="_blank" class="btn" id="btn-part5">リストとタプル</a>
+          <h3 id="part6-title">第6回</h3>
+          <p class="card-subtitle">リストとタプル</p>
+          <div class="btn-group">
+            <a href="https://github.com/user-attachments/files/20532557/Chapter6.pdf" target="_blank" class="btn">講義スライド</a>
+            <a href="https://www.cc.okayama-u.ac.jp/funabiki/PLAS/Python/Python_GUP_basic/index.html" target="_blank" class="btn">練習問題</a>
+          </div>
         </div>
         <div class="card">
-          <h3 id="part5-title">第7回</h3>
-          <a href="https://github.com/user-attachments/files/20532557/Chapter1.pdf" target="_blank" class="btn" id="btn-part5">辞書と集合</a>
+          <h3 id="part7-title">第7回</h3>
+          <p class="card-subtitle">辞書と集合</p>
+          <div class="btn-group">
+            <a href="https://github.com/user-attachments/files/20532557/Chapter7.pdf" target="_blank" class="btn">講義スライド</a>
+            <a href="https://www.cc.okayama-u.ac.jp/funabiki/PLAS/Python/Python_GUP_basic/index.html" target="_blank" class="btn">練習問題</a>
+          </div>
         </div>
         <div class="card">
-          <h3 id="part5-title">第8回</h3>
-          <a href="https://github.com/user-attachments/files/20532557/Chapter1.pdf" target="_blank" class="btn" id="btn-part5">関数の定義</a>
+          <h3 id="part8-title">第8回</h3>
+          <p class="card-subtitle">関数の定義</p>
+          <div class="btn-group">
+            <a href="https://github.com/user-attachments/files/20532557/Chapter8.pdf" target="_blank" class="btn">講義スライド</a>
+            <a href="https://www.cc.okayama-u.ac.jp/funabiki/PLAS/Python/Python_GUP_basic/index.html" target="_blank" class="btn">練習問題</a>
+          </div>
         </div>
         <div class="card">
-          <h3 id="part5-title">第9回</h3>
-          <a href="https://github.com/user-attachments/files/20532557/Chapter1.pdf" target="_blank" class="btn" id="btn-part5">モジュールとライブラリ</a>
+          <h3 id="part9-title">第9回</h3>
+          <p class="card-subtitle">モジュールとライブラリ</p>
+          <div class="btn-group">
+            <a href="https://github.com/user-attachments/files/20532557/Chapter9.pdf" target="_blank" class="btn">講義スライド</a>
+            <a href="https://www.cc.okayama-u.ac.jp/funabiki/PLAS/Python/Python_GUP_basic/index.html" target="_blank" class="btn">練習問題</a>
+          </div>
         </div>
         <div class="card">
-          <h3 id="part5-title">第10回</h3>
-          <a href="https://github.com/user-attachments/files/20532557/Chapter1.pdf" target="_blank" class="btn" id="btn-part5">ファイルの読み書き</a>
+          <h3 id="part10-title">第10回</h3>
+          <p class="card-subtitle">ファイルの読み書き</p>
+          <div class="btn-group">
+            <a href="https://github.com/user-attachments/files/20532557/Chapter10.pdf" target="_blank" class="btn">講義スライド</a>
+            <a href="https://www.cc.okayama-u.ac.jp/funabiki/PLAS/Python/Python_GUP_basic/index.html" target="_blank" class="btn">練習問題</a>
+          </div>
         </div>
         <div class="card">
-          <h3 id="part5-title">第11回</h3>
-          <a href="https://github.com/user-attachments/files/20532557/Chapter1.pdf" target="_blank" class="btn" id="btn-part5">例外処理</a>
+          <h3 id="part11-title">第11回</h3>
+          <p class="card-subtitle">例外処理</p>
+          <div class="btn-group">
+            <a href="https://github.com/user-attachments/files/20532557/Chapter11.pdf" target="_blank" class="btn">講義スライド</a>
+            <a href="https://www.cc.okayama-u.ac.jp/funabiki/PLAS/Python/Python_GUP_basic/index.html" target="_blank" class="btn">練習問題</a>
+          </div>
         </div>
         <div class="card">
-          <h3 id="part5-title">第12回</h3>
-          <a href="https://github.com/user-attachments/files/20532557/Chapter1.pdf" target="_blank" class="btn" id="btn-part5">オブジェクト指向入門</a>
+          <h3 id="part12-title">第12回</h3>
+          <p class="card-subtitle">オブジェクト指向入門</p>
+          <div class="btn-group">
+            <a href="https://github.com/user-attachments/files/20532557/Chapter12.pdf" target="_blank" class="btn">講義スライド</a>
+            <a href="https://www.cc.okayama-u.ac.jp/funabiki/PLAS/Python/Python_GUP_basic/index.html" target="_blank" class="btn">練習問題</a>
+          </div>
         </div>
         <div class="card">
-          <h3 id="part5-title">第13回</h3>
-          <a href="https://github.com/user-attachments/files/20532557/Chapter1.pdf" target="_blank" class="btn" id="btn-part5">簡単なアプリケーション作成①</a>
+          <h3 id="part13-title">第13回</h3>
+          <p class="card-subtitle">簡単なアプリケーション作成①</p>
+          <div class="btn-group">
+            <a href="https://github.com/user-attachments/files/20532557/Chapter13.pdf" target="_blank" class="btn">講義スライド</a>
+            <a href="https://www.cc.okayama-u.ac.jp/funabiki/PLAS/Python/Python_GUP_basic/index.html" target="_blank" class="btn">練習問題</a>
+          </div>
         </div>
         <div class="card">
-          <h3 id="part5-title">第14回</h3>
-          <a href="https://github.com/user-attachments/files/20532557/Chapter1.pdf" target="_blank" class="btn" id="btn-part5">簡単なアプリケーション作成②</a>
+          <h3 id="part14-title">第14回</h3>
+          <p class="card-subtitle">簡単なアプリケーション作成②</p>
+          <div class="btn-group">
+            <a href="https://github.com/user-attachments/files/20532557/Chapter14.pdf" target="_blank" class="btn">講義スライド</a>
+            <a href="https://www.cc.okayama-u.ac.jp/funabiki/PLAS/Python/Python_GUP_basic/index.html" target="_blank" class="btn">練習問題</a>
+          </div>
         </div>
         <div class="card">
-          <h3 id="part5-title">第15回</h3>
-          <a href="https://github.com/user-attachments/files/20532557/Chapter1.pdf" target="_blank" class="btn" id="btn-part5">
-            まとめ
-            </a>
-        </div>
+          <h3 id="part15-title">第15回</h3>
+          <p class="card-subtitle">まとめ</p>
+          <div class="btn-group">
+            <a href="https://github.com/user-attachments/files/20532557/Chapter15.pdf" target="_blank" class="btn">講義スライド</a>
+            <a href="https://www.cc.okayama-u.ac.jp/funabiki/PLAS/Python/Python_GUP_basic/index.html" target="_blank" class="btn">練習問題</a>
+          </div>
+        </div>        
       </div>
-    </section>
+    </section> -->
 
-    <section></section>
+    <section>
+      <h2 id="topics-title"
+          data-lang-jp="授業計画"
+          data-lang-en="Course Schedule">
+        授業計画
+      </h2>
+      <div class="card-container">
+        <div class="card">
+          <h3 id="part1-title" data-lang-jp="第1回" data-lang-en="Lesson 1">第1回</h3>
+          <p class="card-subtitle" data-lang-jp="概要と環境構築" data-lang-en="Introduction and Environment Setup">概要と環境構築</p>
+          <div class="btn-group">
+            <a href="javascript:void(0);" class="btn" onclick="openPdfModal('15eL0L3s7JAc7XOrClpEAPCKPNXQgFdXz')" data-lang-jp="講義スライド" data-lang-en="Lecture Slide">講義スライド</a>
+            <a href="https://www.cc.okayama-u.ac.jp/funabiki/PLAS/Python/Python_GUP_basic/index.html" target="_blank" class="btn" data-lang-jp="練習問題" data-lang-en="Practice Problem">練習問題</a>
+          </div>
+        </div>
+    
+        <!-- Parts 2–15 -->
+        <div class="card">
+          <h3 data-lang-jp="第2回" data-lang-en="Lesson 2">第2回</h3>
+          <p class="card-subtitle" data-lang-jp="基本の文法（文字列と数値）" data-lang-en="Basic Syntax (Strings and Numbers)">基本の文法（文字列と数値）</p>
+          <div class="btn-group">
+            <a href="#" onclick="showPreparationAlert(event)" class="btn" data-lang-jp="講義スライド" data-lang-en="Lecture Slide">講義スライド</a>
+            <a href="#" onclick="showPreparationAlert(event)" class="btn" data-lang-jp="練習問題" data-lang-en="Practice Problem">練習問題</a>
+          </div>
+        </div>
+    
+        <div class="card">
+          <h3 data-lang-jp="第3回" data-lang-en="Lesson 3">第3回</h3>
+          <p class="card-subtitle" data-lang-jp="演算と変数の使い方" data-lang-en="Operators and Variables">演算と変数の使い方</p>
+          <div class="btn-group">
+            <a href="#" onclick="showPreparationAlert(event)" class="btn" data-lang-jp="講義スライド" data-lang-en="Lecture Slide">講義スライド</a>
+            <a href="#" onclick="showPreparationAlert(event)" class="btn" data-lang-jp="練習問題" data-lang-en="Practice Problem">練習問題</a>
+          </div>
+        </div>
+    
+        <div class="card">
+          <h3 data-lang-jp="第4回" data-lang-en="Lesson 4">第4回</h3>
+          <p class="card-subtitle" data-lang-jp="条件分岐" data-lang-en="Conditional Statements">条件分岐</p>
+          <div class="btn-group">
+            <a href="#" onclick="showPreparationAlert(event)" class="btn" data-lang-jp="講義スライド" data-lang-en="Lecture Slide">講義スライド</a>
+            <a href="#" onclick="showPreparationAlert(event)" class="btn" data-lang-jp="練習問題" data-lang-en="Practice Problem">練習問題</a>
+          </div>
+        </div>
+    
+        <div class="card">
+          <h3 data-lang-jp="第5回" data-lang-en="Lesson 5">第5回</h3>
+          <p class="card-subtitle" data-lang-jp="繰り返し処理" data-lang-en="Loops">繰り返し処理</p>
+          <div class="btn-group">
+            <a href="#" onclick="showPreparationAlert(event)" class="btn" data-lang-jp="講義スライド" data-lang-en="Lecture Slide">講義スライド</a>
+            <a href="#" onclick="showPreparationAlert(event)" class="btn" data-lang-jp="練習問題" data-lang-en="Practice Problem">練習問題</a>
+          </div>
+        </div>
+    
+        <div class="card">
+          <h3 data-lang-jp="第6回" data-lang-en="Lesson 6">第6回</h3>
+          <p class="card-subtitle" data-lang-jp="リストとタプル" data-lang-en="Lists and Tuples">リストとタプル</p>
+          <div class="btn-group">
+            <a href="#" onclick="showPreparationAlert(event)" class="btn" data-lang-jp="講義スライド" data-lang-en="Lecture Slide">講義スライド</a>
+            <a href="#" onclick="showPreparationAlert(event)" class="btn" data-lang-jp="練習問題" data-lang-en="Practice Problem">練習問題</a>
+          </div>
+        </div>
+    
+        <div class="card">
+          <h3 data-lang-jp="第7回" data-lang-en="Lesson 7">第7回</h3>
+          <p class="card-subtitle" data-lang-jp="辞書と集合" data-lang-en="Dictionaries and Sets">辞書と集合</p>
+          <div class="btn-group">
+            <a href="#" onclick="showPreparationAlert(event)" class="btn" data-lang-jp="講義スライド" data-lang-en="Lecture Slide">講義スライド</a>
+            <a href="#" onclick="showPreparationAlert(event)" class="btn" data-lang-jp="練習問題" data-lang-en="Practice Problem">練習問題</a>
+          </div>
+        </div>
+    
+        <div class="card">
+          <h3 data-lang-jp="第8回" data-lang-en="Lesson 8">第8回</h3>
+          <p class="card-subtitle" data-lang-jp="関数の定義" data-lang-en="Defining Functions">関数の定義</p>
+          <div class="btn-group">
+            <a href="#" onclick="showPreparationAlert(event)" class="btn" data-lang-jp="講義スライド" data-lang-en="Lecture Slide">講義スライド</a>
+            <a href="#" onclick="showPreparationAlert(event)" class="btn" data-lang-jp="練習問題" data-lang-en="Practice Problem">練習問題</a>
+          </div>
+        </div>
+    
+        <div class="card">
+          <h3 data-lang-jp="第9回" data-lang-en="Lesson 9">第9回</h3>
+          <p class="card-subtitle" data-lang-jp="モジュールとライブラリ" data-lang-en="Modules and Libraries">モジュールとライブラリ</p>
+          <div class="btn-group">
+            <a href="#" onclick="showPreparationAlert(event)" class="btn" data-lang-jp="講義スライド" data-lang-en="Lecture Slide">講義スライド</a>
+            <a href="#" onclick="showPreparationAlert(event)" class="btn" data-lang-jp="練習問題" data-lang-en="Practice Problem">練習問題</a>
+          </div>
+        </div>
+    
+        <div class="card">
+          <h3 data-lang-jp="第10回" data-lang-en="Lesson 10">第10回</h3>
+          <p class="card-subtitle" data-lang-jp="ファイルの読み書き" data-lang-en="File I/O">ファイルの読み書き</p>
+          <div class="btn-group">
+            <a href="#" onclick="showPreparationAlert(event)" class="btn" data-lang-jp="講義スライド" data-lang-en="Lecture Slide">講義スライド</a>
+            <a href="#" onclick="showPreparationAlert(event)" class="btn" data-lang-jp="練習問題" data-lang-en="Practice Problem">練習問題</a>
+          </div>
+        </div>
+    
+        <div class="card">
+          <h3 data-lang-jp="第11回" data-lang-en="Lesson 11">第11回</h3>
+          <p class="card-subtitle" data-lang-jp="例外処理" data-lang-en="Exception Handling">例外処理</p>
+          <div class="btn-group">
+            <a href="#" onclick="showPreparationAlert(event)" class="btn" data-lang-jp="講義スライド" data-lang-en="Lecture Slide">講義スライド</a>
+            <a href="#" onclick="showPreparationAlert(event)" class="btn" data-lang-jp="練習問題" data-lang-en="Practice Problem">練習問題</a>
+          </div>
+        </div>
+    
+        <div class="card">
+          <h3 data-lang-jp="第12回" data-lang-en="Lesson 12">第12回</h3>
+          <p class="card-subtitle" data-lang-jp="オブジェクト指向入門" data-lang-en="Intro to Object-Oriented Programming">オブジェクト指向入門</p>
+          <div class="btn-group">
+            <a href="#" onclick="showPreparationAlert(event)" class="btn" data-lang-jp="講義スライド" data-lang-en="Lecture Slide">講義スライド</a>
+            <a href="#" onclick="showPreparationAlert(event)" class="btn" data-lang-jp="練習問題" data-lang-en="Practice Problem">練習問題</a>
+          </div>
+        </div>
+    
+        <div class="card">
+          <h3 data-lang-jp="第13回" data-lang-en="Lesson 13">第13回</h3>
+          <p class="card-subtitle" data-lang-jp="簡単なアプリケーション作成①" data-lang-en="Simple App Development I">簡単なアプリケーション作成①</p>
+          <div class="btn-group">
+            <a href="#" onclick="showPreparationAlert(event)" class="btn" data-lang-jp="講義スライド" data-lang-en="Lecture Slide">講義スライド</a>
+            <a href="#" onclick="showPreparationAlert(event)" class="btn" data-lang-jp="練習問題" data-lang-en="Practice Problem">練習問題</a>
+          </div>
+        </div>
+    
+        <div class="card">
+          <h3 data-lang-jp="第14回" data-lang-en="Lesson 14">第14回</h3>
+          <p class="card-subtitle" data-lang-jp="簡単なアプリケーション作成②" data-lang-en="Simple App Development II">簡単なアプリケーション作成②</p>
+          <div class="btn-group">
+            <a href="#" onclick="showPreparationAlert(event)" class="btn" data-lang-jp="講義スライド" data-lang-en="Lecture Slide">講義スライド</a>
+            <a href="#" onclick="showPreparationAlert(event)" class="btn" data-lang-jp="練習問題" data-lang-en="Practice Problem">練習問題</a>
+          </div>
+        </div>
+    
+        <div class="card">
+          <h3 data-lang-jp="第15回" data-lang-en="Lesson 15">第15回</h3>
+          <p class="card-subtitle" data-lang-jp="まとめ" data-lang-en="Summary">まとめ</p>
+          <div class="btn-group">
+            <a href="#" onclick="showPreparationAlert(event)" class="btn" data-lang-jp="講義スライド" data-lang-en="Lecture Slide">講義スライド</a>
+            <a href="#" onclick="showPreparationAlert(event)" class="btn" data-lang-jp="練習問題" data-lang-en="Practice Problem">練習問題</a>
+          </div>
+        </div>
+    
+      </div>
+    </section>    
+
+    <!-- <section></section>
       <h2 id="about-title">授業時間外の自己学習</h2>
       <p id="about-content">各授業後に、担当教員が用意したPython演習課題に取り組み、S-CodeLABプラットフォーム上で提出すること。1回あたりの復習・課題作業に2〜3時間程度を想定し、合計で約60時間の自己学習時間を見込む。</p>
-    </section>
+    </section> -->
 
-    <section></section>
+    <section>
+      <h2 id="selfstudy-title"
+          data-lang-jp="授業時間外の自己学習"
+          data-lang-en="Self-Study Outside of Class">
+        授業時間外の自己学習
+      </h2>
+      <p id="selfstudy-content"
+         data-lang-jp="各授業後に、担当教員が用意したPython演習課題に取り組み、S-CodeLABプラットフォーム上で提出すること。1回あたりの復習・課題作業に2〜3時間程度を想定し、合計で約60時間の自己学習時間を見込む。"
+         data-lang-en="After each class, students are required to complete Python exercises prepared by the instructor and submit them via the S-CodeLAB platform. Each review/assignment is expected to take about 2–3 hours, totaling approximately 60 hours of self-study.">
+        各授業後に、担当教員が用意したPython演習課題に取り組み、S-CodeLABプラットフォーム上で提出すること。1回あたりの復習・課題作業に2〜3時間程度を想定し、合計で約60時間の自己学習時間を見込む。
+      </p>
+    </section>
+    
+    <!-- <section></section>
       <h2 id="about-title">テキスト</h2>
       <p id="about-content">•	「やさしいPython」,「Pythonで学ぶプログラミングの作り方」およびS-CodeLABを中心に演習を進める。</p>
-    </section>
+    </section> -->
 
-    <section></section>
+    <section>
+      <h2 id="textbook-title"
+          data-lang-jp="テキスト"
+          data-lang-en="Textbooks">
+        テキスト
+      </h2>
+      <p id="textbook-content"
+         data-lang-jp="• 「やさしいPython」,「Pythonで学ぶプログラミングの作り方」およびS-CodeLABを中心に演習を進める。"
+         data-lang-en="• Exercises will be based mainly on 「やさしいPython」, 「Pythonで学ぶプログラミングの作り方」 and the S-CodeLAB platform.">
+        • 「やさしいPython」,「Pythonで学ぶプログラミングの作り方」およびS-CodeLABを中心に演習を進める。
+      </p>
+    </section>    
+
+    <!-- <section>
       <h2 id="about-title">本授業に関連する参考書・参考資料</h2>
       <p id="about-content">•	参考書: 「やさしいPython」（高橋麻奈：SoftBank Creative）,「Pythonで学ぶプログラミングの作り方」
              
         </p>
         <p id="about-content">•	補足資料: その他、必要な資料を配布   </p>
-    </section>
+    </section> -->
 
     <section>
+      <h2 id="reference-title"
+          data-lang-jp="本授業に関連する参考書・参考資料"
+          data-lang-en="Reference Materials Related to This Course">
+        本授業に関連する参考書・参考資料
+      </h2>
+    
+      <p id="reference1"
+         data-lang-jp="• 参考書: 「やさしいPython」（高橋麻奈：SoftBank Creative）,「Pythonで学ぶプログラミングの作り方」"
+         data-lang-en="• Reference books: 「やさしいPython」 (Mana Takahashi: SoftBank Creative), 「Pythonで学ぶプログラミングの作り方」">
+        • 参考書: 「やさしいPython」（高橋麻奈：SoftBank Creative）,「Pythonで学ぶプログラミングの作り方」
+      </p>
+    
+      <p id="reference2"
+         data-lang-jp="• 補足資料: その他、必要な資料を配布"
+         data-lang-en="• Supplementary materials: Additional materials will be distributed as needed.">
+        • 補足資料: その他、必要な資料を配布
+      </p>
+    </section>
+    
+    <!-- <section>
       <h2 id="evaluation-criteria">学習成果の評価観点</h2>
-      <table>
-        <thead>
+      <table style="width:100%; border-collapse: collapse; margin-top: 20px; background-color: #fff; box-shadow: 0 4px 8px rgba(0,0,0,0.05);">
+        <thead style="background-color: #5A9BD5; color: white;">
           <tr>
-            <th>到達目標</th>
-            <th>成績評価の観点</th>
+            <th style="padding: 12px 16px; text-align: left;">到達目標</th>
+            <th style="padding: 12px 16px; text-align: left;">成績評価の観点</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td>DP1</td>
-            <td>S-CodeLABシステムを活用し、サイバーセキュリティやプログラミングの知識を実際のシステム構築に応用することで、情報工学の実践力を養う。</td>
+        <tbody style="color: #333;">
+          <tr style="border-bottom: 1px solid #ccc;">
+            <td style="padding: 12px 16px;">DP1</td>
+            <td style="padding: 12px 16px;">S-CodeLABシステムを活用し、サイバーセキュリティやプログラミングの知識を実際のシステム構築に応用することで、情報工学の実践力を養う。</td>
           </tr>
-          <tr>
-            <td>DP2</td>
-            <td>講義後の課題を通して、学生は問題を分析し、解決策を設計・実行し、論理的思考力と問題解決能力を養う。</td>
+          <tr style="border-bottom: 1px solid #ccc;">
+            <td style="padding: 12px 16px;">DP2</td>
+            <td style="padding: 12px 16px;">講義後の課題を通して、学生は問題を分析し、解決策を設計・実行し、論理的思考力と問題解決能力を養う。</td>
           </tr>
-          <tr>
-            <td>DP3</td>
-            <td>S-CodeLABのシステムを観察し、課題に取り組むことを通じて、将来の研究テーマに関するアイデアを構想するとともに、文書作成・プレゼンテーション・コミュニケーション能力を高め、主体的かつ協働的に学習する姿勢を養うことができる。</td>
+          <tr style="border-bottom: 1px solid #ccc;">
+            <td style="padding: 12px 16px;">DP3</td>
+            <td style="padding: 12px 16px;">S-CodeLABのシステムを観察し、課題に取り組むことを通じて、将来の研究テーマに関するアイデアを構想するとともに、文書作成・プレゼンテーション・コミュニケーション能力を高め、主体的かつ協働的に学習する姿勢を養うことができる。</td>
           </tr>
         </tbody>
       </table>
-    </section>
+    </section> -->
 
     <section>
+      <h2 id="evaluation-criteria"
+          data-lang-jp="学習成果の評価観点"
+          data-lang-en="Evaluation Criteria for Learning Outcomes">
+        学習成果の評価観点
+      </h2>
+    
+      <table style="width:100%; border-collapse: collapse; margin-top: 20px; background-color: #fff; box-shadow: 0 4px 8px rgba(0,0,0,0.05);">
+        <thead style="background-color: #5A9BD5; color: white;">
+          <tr>
+            <th style="padding: 12px 16px; text-align: left;"
+                data-lang-jp="到達目標"
+                data-lang-en="Learning Objective">到達目標</th>
+            <th style="padding: 12px 16px; text-align: left;"
+                data-lang-jp="成績評価の観点"
+                data-lang-en="Grading Criteria">成績評価の観点</th>
+          </tr>
+        </thead>
+        <tbody style="color: #333;">
+          <tr style="border-bottom: 1px solid #ccc;">
+            <td style="padding: 12px 16px;">DP1</td>
+            <td style="padding: 12px 16px;"
+                data-lang-jp="S-CodeLABシステムを活用し、サイバーセキュリティやプログラミングの知識を実際のシステム構築に応用することで、情報工学の実践力を養う。"
+                data-lang-en="By utilizing the S-CodeLAB system and applying knowledge of cybersecurity and programming to system construction, students will develop practical skills in information engineering.">
+              S-CodeLABシステムを活用し、サイバーセキュリティやプログラミングの知識を実際のシステム構築に応用することで、情報工学の実践力を養う。
+            </td>
+          </tr>
+          <tr style="border-bottom: 1px solid #ccc;">
+            <td style="padding: 12px 16px;">DP2</td>
+            <td style="padding: 12px 16px;"
+                data-lang-jp="講義後の課題を通して、学生は問題を分析し、解決策を設計・実行し、論理的思考力と問題解決能力を養う。"
+                data-lang-en="Through post-lecture assignments, students will develop analytical, design, and execution skills, fostering logical thinking and problem-solving abilities.">
+              講義後の課題を通して、学生は問題を分析し、解決策を設計・実行し、論理的思考力と問題解決能力を養う。
+            </td>
+          </tr>
+          <tr style="border-bottom: 1px solid #ccc;">
+            <td style="padding: 12px 16px;">DP3</td>
+            <td style="padding: 12px 16px;"
+                data-lang-jp="S-CodeLABのシステムを観察し、課題に取り組むことを通じて、将来の研究テーマに関するアイデアを構想するとともに、文書作成・プレゼンテーション・コミュニケーション能力を高め、主体的かつ協働的に学習する姿勢を養うことができる。"
+                data-lang-en="By exploring the S-CodeLAB system and engaging with assignments, students will generate ideas for future research themes while improving documentation, presentation, and communication skills, fostering a proactive and collaborative learning mindset.">
+              S-CodeLABのシステムを観察し、課題に取り組むことを通じて、将来の研究テーマに関するアイデアを構想するとともに、文書作成・プレゼンテーション・コミュニケーション能力を高め、主体的かつ協働的に学習する姿勢を養うことができる。
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>    
+
+    <!-- <section>
       <h2 id="environment-choice">学習成果の評価基準</h2>
       <div class="card-container">
         <div class="card1">
           <h3 id="env1">出席・積極的参加：20% <span>※ (出席および参加態度)</span></h3> 
-          <h3 id="env1">課題提出：80% <span>※ (授業後に実施する課題の提出および内容)</h3>
-
-          <p id="require"><strong>連絡先</strong></p>
+          <h3 id="env1">課題提出：80% <span>※ (授業後に課題の提出および内容)</span></h3>
+    
+          <h3 id="env1">連絡先</h3>
           <ul>
             <li id="need">研究室 - </li>
             <li id="need">電話番号 - </li>
             <li id="need">E-Mail - </li>
           </ul>
-
         </div>
         <div class="card1">
-        <h3 id="env2">履修者へのメッセージ（履修要件など）</h3>
-        <p id="jupyter">• プログラミングの基礎から学習を開始しますので,事前の専門的な知識は必要ありません。</p>
-        <p id="jupyter">• 授業内の演習は,基本的に各自のPCを使用して進めますので,ノートPCを持参してください。</p>
-        <p id="jupyter">• 情報やプログラミングに興味があり,これから学び始めたい方に適した内容となっています。</p>
-        <p id="jupyter">• 使用言語：学生により日本語又は英語</p>
+          <h3 id="env2">履修者へのメッセージ（履修要件など）</h3>
+          <p id="jupyter">• プログラミングの基礎から学習を開始しますので,事前の専門的な知識は必要ありません。</p>
+          <p id="jupyter">• 授業内の演習は,基本的に各自のPCを使用して進めますので,ノートPCを持参してください。</p>
+          <p id="jupyter">• 情報やプログラミングに興味があり,これから学び始めたい方に適した内容となっています。</p>
+          <p id="jupyter">• 使用言語：学生により日本語又は英語</p>
+        </div>
       </div>
     </section>
+     -->
+
+     <section>
+      <h2 id="environment-choice"
+          data-lang-jp="学習成果の評価基準"
+          data-lang-en="Grading Breakdown & Contact Information">
+        学習成果の評価基準
+      </h2>
+    
+      <div class="card-container">
+        <div class="card1">
+          <h3 id="env1"
+              data-lang-jp="出席・積極的参加：20%"
+              data-lang-en="Attendance & Participation: 20%">
+            出席・積極的参加：20%
+            <span data-lang-jp="※ (出席および参加態度)"
+                  data-lang-en="(attendance and participation attitude)">
+              ※ (出席および参加態度)
+            </span>
+          </h3>
+    
+          <h3 id="env1"
+              data-lang-jp="課題提出：80%"
+              data-lang-en="Assignment Submission: 80%">
+            課題提出：80%
+            <span data-lang-jp="※ (授業後に課題の提出および内容)"
+                  data-lang-en="(content and submission of assignments after lectures)">
+              ※ (授業後に課題の提出および内容)
+            </span>
+          </h3>
+    
+          <h3 id="env1"
+              data-lang-jp="連絡先"
+              data-lang-en="Contact Information">連絡先</h3>
+          <ul>
+            <li id="need" data-lang-jp="研究室 -" data-lang-en="Office -">研究室 -</li>
+            <li id="need" data-lang-jp="電話番号 -" data-lang-en="Phone -">電話番号 -</li>
+            <li id="need" data-lang-jp="E-Mail -" data-lang-en="E-Mail -">E-Mail -</li>
+          </ul>
+        </div>
+    
+        <div class="card1">
+          <h3 id="env2"
+              data-lang-jp="履修者へのメッセージ（履修要件など）"
+              data-lang-en="Message to Students (Enrollment Requirements, etc.)">
+            履修者へのメッセージ（履修要件など）
+          </h3>
+          <p id="jupyter"
+             data-lang-jp="• プログラミングの基礎から学習を開始しますので,事前の専門的な知識は必要ありません。"
+             data-lang-en="• No prior technical knowledge is required, as the course starts from the basics of programming.">
+            • プログラミングの基礎から学習を開始しますので,事前の専門的な知識は必要ありません。
+          </p>
+          <p id="jupyter"
+             data-lang-jp="• 授業内の演習は,基本的に各自のPCを使用して進めますので,ノートPCを持参してください。"
+             data-lang-en="• Students are expected to use their own laptops during class exercises. Please bring a laptop.">
+            • 授業内の演習は,基本的に各自のPCを使用して進めますので,ノートPCを持参してください。
+          </p>
+          <p id="jupyter"
+             data-lang-jp="• 情報やプログラミングに興味があり,これから学び始めたい方に適した内容となっています。"
+             data-lang-en="• This course is suitable for those interested in IT or programming and wish to start learning.">
+            • 情報やプログラミングに興味があり,これから学び始めたい方に適した内容となっています。
+          </p>
+          <p id="jupyter"
+             data-lang-jp="• 使用言語：学生により日本語又は英語"
+             data-lang-en="• Language: Japanese or English depending on the student">
+            • 使用言語：学生により日本語又は英語
+          </p>
+        </div>
+      </div>
+    </section>    
 
   </main>
 
@@ -411,24 +899,151 @@
     <p>&copy; 2027 Fukuyama City University</p>
   </footer>
 
+  <!-- PDF Modal Viewer -->
+<div id="pdfModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.7); z-index:9999;">
+  <div style="position:relative; width:80%; height:80%; margin:5% auto; background:#fff; display: flex; flex-direction: column;">
+    <button onclick="closePdfModal()" style="align-self: flex-end; margin: 10px; font-size:18px; background-color:#fff; border:none; cursor:pointer; z-index:10;">✖</button>
+    <div style="flex: 1;">
+      <iframe id="pdfViewer" src="" style="width:100%; height:100%; border:none;"></iframe>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openPdfModal(fileId) {
+    const viewerUrl = `https://drive.google.com/file/d/${fileId}/preview`;
+    document.getElementById('pdfViewer').src = viewerUrl;
+    document.getElementById('pdfModal').style.display = 'block';
+  }
+
+  function closePdfModal() {
+    document.getElementById('pdfModal').style.display = 'none';
+    document.getElementById('pdfViewer').src = '';
+  }
+
+</script>
+
+<script>
+  function showPreparationAlert(event) {
+    event.preventDefault();
+    const lang = document.documentElement.getAttribute("lang") || "jp";
+    const message = lang === "en"
+      ? "This page is currently under preparation. Please check back later."
+      : "このページは現在準備中です。しばらくお待ちください。";
+    alert(message);
+    window.scrollTo({ top: window.scrollY, behavior: 'instant' });
+  }
+  </script>
+
+  <script>
+function showPreparationAlert(event) {
+  event.preventDefault();
+  const lang = document.documentElement.getAttribute("lang") || "jp";
+  const message = lang === "en"
+    ? "This page is currently under preparation. Please check back later."
+    : "このページは現在準備中です。しばらくお待ちください。";
+  alert(message);
+  window.scrollTo({ top: window.scrollY, behavior: 'instant' });
+}
+</script>
+
+<script>
+  // Replace card buttons for cards 2 to 15 (except card 1) with preparation alert
+  document.addEventListener("DOMContentLoaded", function () {
+    const cards = document.querySelectorAll(".card");
+    cards.forEach((card, index) => {
+      if (index === 0) return; // Skip the first card (index 0)
+      const buttons = card.querySelectorAll(".btn");
+      buttons.forEach(btn => {
+        btn.setAttribute("href", "#");
+        btn.setAttribute("onclick", "showPreparationAlert(event)");
+      });
+    });
+  });
+</script>
+
   <script>
     const assistiveToggle = document.getElementById("assistiveToggle");
     const sidebarMenu = document.getElementById("sidebarMenu");
     const sidebarLinks = sidebarMenu.querySelectorAll("a");
+    const darkToggle = document.getElementById("darkModeToggle");
+
+    let timeout;
 
     assistiveToggle.addEventListener("click", () => {
-      sidebarMenu.style.display =
-        sidebarMenu.style.display === "block" ? "none" : "block";
+      sidebarMenu.classList.toggle("open");
+      if (sidebarMenu.classList.contains("open")) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+          sidebarMenu.classList.remove("open");
+        }, 5000);
+      }
     });
 
     sidebarLinks.forEach(link => {
       link.addEventListener("click", () => {
-        sidebarMenu.style.display = "none";
+        sidebarMenu.classList.remove("open");
       });
     });
+
+    window.addEventListener("scroll", () => {
+      sidebarMenu.classList.remove("open");
+    });
+
+    darkToggle.addEventListener("click", () => {
+      document.body.classList.toggle("dark");
+      darkToggle.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
+    });
+  </script>
+
+  <script>
+    function setLanguage(lang) {
+      const elements = document.querySelectorAll('[data-lang-jp]');
+      elements.forEach(el => {
+        el.textContent = el.getAttribute(`data-lang-${lang}`);
+      });
+
+      document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+      document.getElementById('btn-jp').classList.toggle('active', lang === 'jp');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      setLanguage('jp');
+    });
+  </script>
+
+  <!-- Sidebar section for language toggle translation -->
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const sidebarTitle = document.querySelector(".sidebar-menu h2");
+    const sidebarLinks = document.querySelectorAll(".sidebar-menu a");
+  
+    function updateSidebarLanguage(lang) {
+      sidebarTitle.textContent = lang === 'en' ? 'S-CodeLAB' : 'S-CodeLAB';
+      sidebarLinks[0].textContent = lang === 'en' ? 'Home' : 'ホーム';
+      sidebarLinks[1].textContent = lang === 'en' ? 'Overview' : '概要';
+      sidebarLinks[2].textContent = lang === 'en' ? 'Topics' : 'トピック';
+      sidebarLinks[3].textContent = lang === 'en' ? 'Evaluation Criteria' : '評価基準';
+    }
+  
+    document.getElementById("btn-en").addEventListener("click", () => {
+      document.documentElement.setAttribute("lang", "en");
+      updateSidebarLanguage("en");
+    });
+  
+    document.getElementById("btn-jp").addEventListener("click", () => {
+      document.documentElement.setAttribute("lang", "jp");
+      updateSidebarLanguage("jp");
+    });
+  });
   </script>
 </body>
 </html>
+
+
+  
+
+
 
   
 
