@@ -262,6 +262,14 @@ body.dark .card .card-subtitle {
       background-color: #ddd;
       margin-top: 40px;
     }
+    footer a {
+      color: #5A9BD5;
+      text-decoration: none;
+  }
+
+  footer a:hover {
+      text-decoration: underline;
+  }
     .card-subtitle {
       font-size: 1.1em;
       color: #555;
@@ -314,7 +322,11 @@ body.dark .card .card-subtitle {
       <div class="social-icons">
         <a href="https://www.linkedin.com/in/soe-thandar-aung-79d23104" target="_blank"><i class="fab fa-linkedin-in"></i></a>
         <a href="https://github.com/soethandaraung395" target="_blank"><i class="fab fa-github"></i></a>
-        <a href="https://researchmap.jp/soethandar" target="_blank"><i class="fas fa-book"></i></a>
+        <span id="researchmap-link"
+              data-lang-en='<a href="https://researchmap.jp/soethandar?lang=en" target="_blank"><i class="fas fa-book"></i></a>'
+              data-lang-jp='<a href="https://researchmap.jp/soethandar?lang=ja" target="_blank"><i class="fas fa-book"></i></a>'>
+          <a href="https://researchmap.jp/soethandar?lang=ja" target="_blank"><i class="fas fa-book"></i></a>
+        </span>
       </div>
     </div>
   </header>
@@ -678,11 +690,11 @@ body.dark .card .card-subtitle {
 
   <footer>
     <p id="footer-text"
-       data-lang-en="© 2027 Fukuyama City University"
-       data-lang-jp="© 2027 福山市立大学">
-       © 2027 福山市立大学
+       data-lang-en='© 2027 <a href="https://www.fcu.ac.jp/en/index.html" target="_blank">Fukuyama City University</a> All Rights Reserved.'
+       data-lang-jp='© 2027 <a href="https://www.fcu.ac.jp/" target="_blank">福山市立大学</a> All Rights Reserved.'>
+       © 2027 <a href="https://www.fcu.ac.jp/" target="_blank">福山市立大学</a> All Rights Reserved.
     </p>
-  </footer>
+  </footer>  
   
   <!-- PDF Modal Viewer -->
 <div id="pdfModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.7); z-index:9999;">
@@ -797,12 +809,14 @@ function showPreparationAlert(event) {
     });
   </script>
 
-  <!-- Sidebar section for language toggle translation -->
-  <script>
+   <!-- Sidebar section for language toggle translation -->
+   <script>
+    // Set default language on page load
     document.addEventListener("DOMContentLoaded", () => {
       const sidebarTitle = document.querySelector(".sidebar-menu h2");
       const sidebarLinks = document.querySelectorAll(".sidebar-menu a");
       const footerText = document.getElementById("footer-text");
+      const researchmap = document.getElementById("researchmap-link");
     
       function updateSidebarLanguage(lang) {
         sidebarTitle.textContent = lang === 'en' ? 'S-CodeLAB' : 'S-CodeLAB';
@@ -810,22 +824,33 @@ function showPreparationAlert(event) {
         sidebarLinks[1].textContent = lang === 'en' ? 'Overview' : '概要';
         sidebarLinks[2].textContent = lang === 'en' ? 'Topics' : 'トピック';
         sidebarLinks[3].textContent = lang === 'en' ? 'Evaluation Criteria' : '評価基準';
-        footerText.textContent = lang === 'en'
+        footerText.innerHTML = lang === 'en'
           ? footerText.getAttribute("data-lang-en")
           : footerText.getAttribute("data-lang-jp");
+    
+        researchmap.innerHTML = lang === 'en'
+          ? researchmap.getAttribute("data-lang-en")
+          : researchmap.getAttribute("data-lang-jp");
+    
       }
+
+  // Default language (e.g., Japanese)
+  const defaultLang = document.documentElement.getAttribute("lang") || "jp";
+  updateSidebarLanguage(defaultLang);
+
+  document.getElementById("btn-en").addEventListener("click", () => {
+    document.documentElement.setAttribute("lang", "en");
+    updateSidebarLanguage("en");
+  });
+
+  document.getElementById("btn-jp").addEventListener("click", () => {
+    document.documentElement.setAttribute("lang", "jp");
+    updateSidebarLanguage("jp");
+  });
+});
+
+  </script>
     
-      document.getElementById("btn-en").addEventListener("click", () => {
-        document.documentElement.setAttribute("lang", "en");
-        updateSidebarLanguage("en");
-      });
-    
-      document.getElementById("btn-jp").addEventListener("click", () => {
-        document.documentElement.setAttribute("lang", "jp");
-        updateSidebarLanguage("jp");
-      });
-    });
-    </script>
     
 </body>
 </html>
