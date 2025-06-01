@@ -692,9 +692,9 @@ body.dark .card .card-subtitle {
         テキスト
       </h2>
       <p id="textbook-content"
-         data-lang-jp="• 「やさしいPython」,「Pythonで学ぶプログラミングの作り方」およびS-CodeLABを中心に演習を進める。"
-         data-lang-en="• Exercises will be based mainly on 「やさしいPython」, 「Pythonで学ぶプログラミングの作り方」 and the S-CodeLAB platform.">
-        • 「やさしいPython」,「Pythonで学ぶプログラミングの作り方」およびS-CodeLABを中心に演習を進める。
+         data-lang-jp="「やさしいPython」,「Pythonで学ぶプログラミングの作り方」および S-CodeLAB を中心に演習を進める。"
+         data-lang-en="Exercises will be based mainly on 「やさしいPython」, 「Pythonで学ぶプログラミングの作り方」 and the S-CodeLAB platform.">
+        「やさしいPython」,「Pythonで学ぶプログラミングの作り方」およびS-CodeLABを中心に演習を進める。
       </p>
     </section>    
 
@@ -895,10 +895,17 @@ body.dark .card .card-subtitle {
 
   </main>
 
-  <footer>
+  <!-- <footer>
     <p>&copy; 2027 Fukuyama City University</p>
+  </footer> -->
+  <footer>
+    <p id="footer-text"
+       data-lang-en="© 2027 Fukuyama City University"
+       data-lang-jp="© 2027 福山市立大学">
+       © 2027 福山市立大学
+    </p>
   </footer>
-
+  
   <!-- PDF Modal Viewer -->
 <div id="pdfModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.7); z-index:9999;">
   <div style="position:relative; width:80%; height:80%; margin:5% auto; background:#fff; display: flex; flex-direction: column;">
@@ -1013,30 +1020,35 @@ function showPreparationAlert(event) {
   </script>
 
   <!-- Sidebar section for language toggle translation -->
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const sidebarTitle = document.querySelector(".sidebar-menu h2");
-    const sidebarLinks = document.querySelectorAll(".sidebar-menu a");
-  
-    function updateSidebarLanguage(lang) {
-      sidebarTitle.textContent = lang === 'en' ? 'S-CodeLAB' : 'S-CodeLAB';
-      sidebarLinks[0].textContent = lang === 'en' ? 'Home' : 'ホーム';
-      sidebarLinks[1].textContent = lang === 'en' ? 'Overview' : '概要';
-      sidebarLinks[2].textContent = lang === 'en' ? 'Topics' : 'トピック';
-      sidebarLinks[3].textContent = lang === 'en' ? 'Evaluation Criteria' : '評価基準';
-    }
-  
-    document.getElementById("btn-en").addEventListener("click", () => {
-      document.documentElement.setAttribute("lang", "en");
-      updateSidebarLanguage("en");
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const sidebarTitle = document.querySelector(".sidebar-menu h2");
+      const sidebarLinks = document.querySelectorAll(".sidebar-menu a");
+      const footerText = document.getElementById("footer-text");
+    
+      function updateSidebarLanguage(lang) {
+        sidebarTitle.textContent = lang === 'en' ? 'S-CodeLAB' : 'S-CodeLAB';
+        sidebarLinks[0].textContent = lang === 'en' ? 'Home' : 'ホーム';
+        sidebarLinks[1].textContent = lang === 'en' ? 'Overview' : '概要';
+        sidebarLinks[2].textContent = lang === 'en' ? 'Topics' : 'トピック';
+        sidebarLinks[3].textContent = lang === 'en' ? 'Evaluation Criteria' : '評価基準';
+        footerText.textContent = lang === 'en'
+          ? footerText.getAttribute("data-lang-en")
+          : footerText.getAttribute("data-lang-jp");
+      }
+    
+      document.getElementById("btn-en").addEventListener("click", () => {
+        document.documentElement.setAttribute("lang", "en");
+        updateSidebarLanguage("en");
+      });
+    
+      document.getElementById("btn-jp").addEventListener("click", () => {
+        document.documentElement.setAttribute("lang", "jp");
+        updateSidebarLanguage("jp");
+      });
     });
-  
-    document.getElementById("btn-jp").addEventListener("click", () => {
-      document.documentElement.setAttribute("lang", "jp");
-      updateSidebarLanguage("jp");
-    });
-  });
-  </script>
+    </script>
+    
 </body>
 </html>
 
