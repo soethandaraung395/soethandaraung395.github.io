@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <!-- <title>Soe Thandar Aung - Programming Syllabus</title> -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>S-CodeLAB - Introduction to Programming I (Python)</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
     body {
       font-family: 'Roboto', sans-serif;
@@ -12,36 +13,43 @@
       padding: 0;
       background-color: #f4f4f4;
       color: #333;
+      min-width: 1024px;
+      overflow-x: auto;
     }
-
-    <!-- header {
-      background-color: #4CAF50;
-      color: white;
-      padding: 20px;
-      text-align: center;
-    } -->
 
     header {
       background-image: url('https://static.licdn.com/aero-v1/sc/h/5q92mjc5c51bjlwaj3rs9aa82');
-      background-size: cover; /* Ensure the image covers the entire header */
-      background-position: center; /* Center the image */
-      color: white; /* Ensure text is readable on the background */
+      background-size: cover;
+      background-position: center;
+      color: white;
       padding: 20px;
       text-align: center;
-  }
+    }
 
     header h1 {
       margin: 0;
       font-size: 2em;
     }
 
-    .header-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 20px;
-      text-align: center;
+    .language-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      gap: 15px;
+    }
+    .language-toggle button {
+      background-color: white;
+      color: #5A9BD5;
+      border: none;
+      padding: 8px 12px;
+      margin-left: 5px;
+      cursor: pointer;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+    .language-toggle button.active {
+      background-color: #FFD700;
+      color: #333;
     }
 
     .instructor-info {
@@ -52,18 +60,24 @@
       gap: 8px;
     }
 
-    .instructor-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
     .instructor-photo {
       width: 80px;
       height: 80px;
       border-radius: 50%;
       object-fit: cover;
       border: 2px solid white;
+    }
+
+    .social-icons a {
+      text-decoration: none;
+      font-size: 1.5em;
+      margin: 0 8px;
+      color: white;
+      transition: transform 0.2s ease;
+    }
+    .social-icons a:hover {
+      transform: scale(1.2);
+      color: #FFD700;
     }
 
     main {
@@ -93,6 +107,7 @@
       background: #fff;
       border-radius: 10px;
       width: 300px;
+      max-width: 100%;
       text-align: center;
       padding: 20px;
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
@@ -100,21 +115,6 @@
     }
 
     .card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-    }
-
-    .card1 {
-      background: #fff;
-      border-radius: 10px;
-      width: 500px;
-      text-align: justify;
-      padding: 20px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .card1:hover {
       transform: translateY(-8px);
       box-shadow: 0 8px 16px rgba(0,0,0,0.2);
     }
@@ -129,26 +129,87 @@
       border-radius: 6px;
       transition: background-color 0.3s ease;
     }
-
     .btn:hover {
       background-color: #3E7BBE;
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
+    /* AssistiveTouch-style Sidebar */
+    .assistive-sidebar {
+      position: fixed;
+      bottom: 20px;
+      right: 20px; /* change from left */
+      z-index: 1000;
+    }    
+
+    .assistive-button {
+      background-color: #5A9BD5;
+      color: white;
+      font-size: 1.5em;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     }
 
-    th, td {
-      border: 1px solid #ccc;
-      padding: 10px;
+    .sidebar-menu {
+      display: none;
+      position: absolute;
+      bottom: 70px;
+      right: 0;         /* align to the right of the button */
+      left: auto;
+      width: 220px;
+      max-width: 90vw;
+      background-color: #f4f4f4;
+      border-radius: 10px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.15);
+      padding: 15px;
       text-align: center;
+      transition: opacity 0.3s ease;
+    }    
+
+    .sidebar-menu h2 {
+      font-size: 1.2em;
+      color: #333;
+      margin-bottom: 10px;
     }
 
-  tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
+    .sidebar-menu a {
+      display: block;
+      margin: 10px 0;
+      padding: 10px;
+      text-decoration: none;
+      background-color: #5A9BD5;
+      color: white;
+      border-radius: 6px;
+      transition: background-color 0.3s ease;
+    }
+    .sidebar-menu a:hover {
+      background-color: #3E7BBE;
+    }
+
+    @media (max-width: 768px) {
+      main {
+        padding: 10px;
+      }
+      .card-container {
+        flex-direction: column;
+        align-items: center;
+      }
+      .card {
+        width: 90%;
+      }
+      .assistive-sidebar {
+        left: 10px;
+        bottom: 10px;
+      }
+      .sidebar-menu {
+        left: auto;
+        right: 0;
+        transform: translateX(0);
+      }
+    }
 
     footer {
       text-align: center;
@@ -156,121 +217,7 @@
       background-color: #ddd;
       margin-top: 40px;
     }
-
-    @media (max-width: 768px) {
-      .header-container {
-        flex-direction: column;
-      }
-    }
-    .social-icons a {
-      text-decoration: none;
-      font-size: 1.5em;
-      margin: 0 8px;
-      color: white;
-      transition: transform 0.2s ease;
-    }
-
-    .social-icons a:hover {
-      transform: scale(1.2);
-      color: #FFD700; /* Gold on hover for nice effect */
-    }
-
-    .language-toggle {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      gap: 15px; /* Added spacing between buttons */
-    }
-    .language-toggle button {
-      background-color: white;
-      color: #5A9BD5;
-      border: none;
-      padding: 8px 12px;
-      margin-left: 5px;
-      cursor: pointer;
-      border-radius: 5px;
-      font-weight: bold;
-    }
-    .language-toggle button.active {
-      background-color: #FFD700;
-      color: #333;
-    }
-    #require {
-      color: #5A9BD5; /* Lighter blue color for the heading */
-      font-size: 1.5em; /* Slightly larger font size for emphasis */
-      margin-bottom: 10px; /* Add spacing below the heading */
-  }
-  
-  #need {
-      color: #333; /* Neutral dark color for list items */
-      font-size: 1.2em; /* Adjust font size for readability */
-      margin-bottom: 5px; /* Add spacing between list items */
-  }
-
-  #env1 span {
-    font-size: 0.9em; /* Slightly smaller font size */
-    color: #777; /* Neutral gray color */
-}
-
-.sidebar {
-  position: fixed; /* Keep the sidebar fixed on the left side */
-  top: 50%; /* Center vertically */
-  left: 0; /* Align to the left edge */
-  transform: translateY(-50%); /* Adjust for vertical centering */
-  width: 200px; /* Set the width of the sidebar */
-  height: auto; /* Adjust height based on content */
-  color: #333; /* Neutral dark text color */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
-  background-color: #fff; /* Match the button background color */
-  border-radius: 10px; /* Rounded corners for a clean look */
-}
-
-.sidebar {
-  position: fixed; /* Keep the sidebar fixed on the left side */
-  top: 50%; /* Center vertically */
-  left: 0; /* Align to the left edge */
-  transform: translateY(-50%); /* Adjust for vertical centering */
-  width: 200px; /* Set the width of the sidebar */
-  height: auto; /* Adjust height based on content */
-  color: #333; /* Neutral dark text color */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
-  background-color: #f4f4f4; /* Match the body's background color */
-  border-radius: 10px; /* Rounded corners for a clean look */
-}
-
-.sidebar a {
-  color: white; /* Button text color */
-  text-decoration: none;
-  margin: 10px 0;
-  padding: 10px 20px;
-  border-radius: 6px;
-  background-color: #5A9BD5; /* Match the button color in the "Topics" section */
-  transition: background-color 0.3s ease;
-}
-
-.sidebar a:hover {
-  background-color: #3E7BBE; /* Hover effect matches other buttons */
-}
-
-.sidebar h2 {
-  margin-bottom: 20px;
-  font-size: 1.5em;
-  color: #333; /* Neutral dark text color */
-}
-
   </style>
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
   <header>
@@ -278,41 +225,31 @@
     <div class="language-toggle">
       <button onclick="setLanguage('en')" id="btn-en" class="active">EN</button>
       <button onclick="setLanguage('jp')" id="btn-jp">JP</button>
-      <!-- <a href="../index.html" class="btn">Home</a>  -->
     </div>
     <div class="instructor-info">
-      <img src="https://i1.rgstatic.net/ii/profile.image/11431281216021398-1704541352822_Q128/Soe-Aung-10.jpg" 
-          alt="Instructor Photo" 
-          class="instructor-photo">
+      <img src="https://i1.rgstatic.net/ii/profile.image/11431281216021398-1704541352822_Q128/Soe-Aung-10.jpg" class="instructor-photo">
       <strong>Soe Thandar Aung, Ph.D.</strong>
       <span>soethandar@s.okayama-u.ac.jp</span>
       <div class="social-icons">
-        <a href="www.linkedin.com/in/soe-thandar-aung-79d23104" target="_blank" title="LinkedIn">
-          <i class="fab fa-linkedin-in"></i>
-        </a>
-        <a href="https://github.com/soethandaraung395" target="_blank" title="GitHub">
-          <i class="fab fa-github"></i>
-        </a>
-        <a id="researchmap-link" href="https://researchmap.jp/soethandar" target="_blank" title="ResearchMap">
-          <i class="fas fa-book"></i>
-        </a>
+        <a href="https://www.linkedin.com/in/soe-thandar-aung-79d23104" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+        <a href="https://github.com/soethandaraung395" target="_blank"><i class="fab fa-github"></i></a>
+        <a href="https://researchmap.jp/soethandar" target="_blank"><i class="fas fa-book"></i></a>
       </div>
     </div>
   </header>
-  <!-- <div class="sidebar">
-    <h2>Navigation</h2>
-    <a href="../index.html">Home</a> 
-    <a href="#about-title">About</a>
-    <a href="#topics-title">Topics</a>
-    <a href="#evaluation-criteria">Evaluation</a>
-  </div> -->
-  <div class="sidebar">
-    <h2>S-CodeLAB</h2>
-    <a href="../index.html">ホーム</a>
-    <a href="#about-title">概要</a>
-    <a href="#topics-title">トピック</a>
-    <a href="#evaluation-criteria">評価基準</a>
+
+  <!-- Assistive Sidebar -->
+  <div class="assistive-sidebar" id="assistiveSidebar">
+    <button id="assistiveToggle" class="assistive-button" title="Menu">☰</button>
+    <div class="sidebar-menu" id="sidebarMenu">
+      <h2>S-CodeLAB</h2>
+      <a href="../index.html">ホーム</a>
+      <a href="#about-title">概要</a>
+      <a href="#topics-title">トピック</a>
+      <a href="#evaluation-criteria">評価基準</a>
+    </div>
   </div>
+
   <main>
     <section>
       <h2 id="about-title">本授業の到達目標（本授業で学生が身につけるもの・身につける力</h2>
@@ -474,6 +411,29 @@
     <p>&copy; 2027 Fukuyama City University</p>
   </footer>
 
-  
+  <script>
+    const assistiveToggle = document.getElementById("assistiveToggle");
+    const sidebarMenu = document.getElementById("sidebarMenu");
+    const sidebarLinks = sidebarMenu.querySelectorAll("a");
+
+    assistiveToggle.addEventListener("click", () => {
+      sidebarMenu.style.display =
+        sidebarMenu.style.display === "block" ? "none" : "block";
+    });
+
+    sidebarLinks.forEach(link => {
+      link.addEventListener("click", () => {
+        sidebarMenu.style.display = "none";
+      });
+    });
+  </script>
 </body>
 </html>
+
+  
+
+
+
+
+
+  
